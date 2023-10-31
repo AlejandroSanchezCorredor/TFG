@@ -1,0 +1,27 @@
+service: checkit-application-requirements
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    layer:
+      name: ${self:provider.stage}-requirements-layer
+      description: Python requirements lambda layer
+      compatibleRuntimes:
+        - python3.10
+    dockerizePip: true
+    dockerImage: public.ecr.aws/sam/build-python3.10:latest
+    fileName: requirements.txt
+    slim: true
+
+provider:
+  name: aws
+  runtime: python3.10
+  region: eu-west-1
+  stage: ${opt:stage, 'develop'}
+  profile: ${opt:aws-profile, 'checkit_cli'}
+
+package:
+  patterns:
+    - "!**/**"

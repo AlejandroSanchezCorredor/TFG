@@ -1,0 +1,23 @@
+# ======================================================================================================================
+# [DEFINITION] Default Security Group + VPC Subnets (From CONSOLE default configuration)
+# ======================================================================================================================
+production_security:
+  securityGroupId: sg-06488bb37923e0549
+  subnetIds:
+    - subnet-07f811d57f21cbb2e
+    - subnet-06accc2ef46f87225
+    - subnet-0ccb2724b3502033d
+
+preproduction_security:
+  securityGroupId: sg-06488bb37923e0549
+  subnetIds:
+    - subnet-07f811d57f21cbb2e
+    - subnet-06accc2ef46f87225
+    - subnet-0ccb2724b3502033d
+
+develop_security:
+  securityGroupId: sg-06488bb37923e0549
+  subnetIds:
+    - subnet-07f811d57f21cbb2e
+    - subnet-06accc2ef46f87225
+    - subnet-0ccb2724b3502033d

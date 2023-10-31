@@ -1,0 +1,292 @@
+service: checkit-application
+
+plugins:
+  - serverless-offline
+  - serverless-offline-scheduler
+  - serverless-export-env
+  #- serverless-certificate-creator
+  #- serverless-domain-manager
+
+provider:
+  name: aws
+  runtime: python3.10
+  endpointType: REGIONAL
+  memorySize: 512
+  timeout: 15
+  region: eu-west-1
+  deploymentMethod: direct
+  stage: ${opt:stage, 'develop'}
+  profile: ${opt:aws-profile, 'checkit_cli'}
+  environment:
+    AWS_STAGE: ${self:provider.stage}
+    AWS_SERVICE: ${self:service}
+    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+    COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    RDS_MASTER_USER: ${ssm:rds_master_user}
+    RDS_MASTER_PASSWORD: ${ssm:rds_master_password}
+    RDS_AURORA_PORT: ${ssm:rds_aurora_port}
+    RDS_AURORA_ENDPOINT: ${ssm:rds_aurora_endpoint}
+    RDS_AURORA_DB: ${self:custom.rdsDatabaseName}
+    S3_BUCKET_STORAGE: ${self:custom.s3BucketStorageName}
+    CF_DOMAIN: ${self:custom.cloudFrontDomainName}
+    SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
+
+  iam:
+    role:
+      statements:
+        # COGNITO Permissions
+        - Effect: Allow
+          Action:
+            - cognito-idp:AdminGetUser
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminUpdateUserAttributes
+            - cognito-idp:AdminDisableUser
+            - cognito-idp:AdminEnableUser
+            - cognito-idp:AdminDeleteUser
+            - cognito-idp:AdminDeleteUserAttributes
+            - cognito-idp:AdminLinkProviderForUser
+            - cognito-idp:AdminUserGlobalSignOut
+            - cognito-idp:AdminListGroupsForUser
+            - cognito-idp:AdminRemoveUserFromGroup
+            - cognito-idp:AdminAddUserToGroup
+            - cognito-idp:ListGroups
+          Resource: !GetAtt CognitoUserPool.Arn
+        # S3 Permissions
+        - Effect: Allow
+          Action:
+            - s3:ListBucket
+            - s3:GetObject
+            - s3:PutObject
+            - s3:GetObjectTagging
+            - s3:PutObjectTagging
+            - s3:DeleteObject
+          Resource:
+            - arn:aws:s3:::${self:custom.s3BucketStorageName}
+            - arn:aws:s3:::${self:custom.s3BucketStorageName}/*
+        # SQS Permissions
+        - Effect: Allow
+          Action:
+            - sqs:CreateQueue
+            - sqs:DeleteQueue
+            - sqs:GetQueueAttributes
+            - sqs:GetQueueUrl
+            - sqs:ReceiveMessage
+            - sqs:SetQueueAttributes
+            - sqs:SendMessage
+          Resource: '*'
+        # SES Permissions
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+          Resource: '*'
+        # LAMBDA Permissions
+        - Effect: Allow
+          Action:
+            - lambda:GetFunction
+            - lambda:RemovePermission
+          Resource: '*'
+        # SSM Permissions
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource:
+            - "*"
+
+custom:
+  appEnvironment: ${file(serverless_resources/environment.yml):environment.${self:provider.stage}}
+  # APP SECURITY
+  appSecurity: ${self:custom.appEnvironment.appSecurity}
+  # COGNITO POOLS
+  cognitoUserPoolName: ${self:service}-user-pool
+  cognitoIdentityPoolName: ${self:service}_indentity_pool
+  cognitoUserPoolClientName: ${self:custom.cognitoUserPoolName}-client
+  # RDS AURORA DB
+  rdsClusterName: ${self:service}-cluster
+  rdsInstanceName: ${self:service}-instance
+  rdsDatabaseName: checkit_application
+  rdsDomainName: db.${self:custom.route53DomainName}
+  # S3 BUCKETS
+  s3BucketAppName: ${self:service}.webapp.${self:provider.stage}
+  s3BucketStorageName: ${self:service}.storage.${self:provider.stage}
+  # SQS Queues
+  sqsEmailNotification: ${self:service}-email-notification-${self:provider.stage}
+
+  # ROUTE53
+  route53DomainName: ${self:custom.appEnvironment.route53DomainName}
+  # CLOUDFRONT
+  cloudFrontDomainName: app.${self:custom.route53DomainName}
+  cloudFrontHostedZoneId: ${self:custom.appEnvironment.cloudFrontHostedZoneId}
+  cloudFrontAcmCertificateArn: ${self:custom.appEnvironment.cloudFrontAcmCertificateArn}
+  # SES
+  sesEmailSenderAddress: checkit@grupovermon.com
+  sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
+
+  # [GENERATOR] CERTIFICATE + DOMAIN
+  customCertificate: ${file(serverless_resources/aws_acm_certificates.yml)}
+  customDomain: ${file(serverless_resources/aws_route53.yml)}
+
+
+package:
+  individually: true
+  excludeDevDependencies: false
+  patterns:
+    - '!**/**'
+    - 'application/**'
+
+functions:
+  api:
+    handler: application/handler.api
+    name: ${self:service}-handler-api
+    memorySize: 512
+    layers:
+      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    events:
+      - http:
+          path: api/users
+          method: post
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/users
+          method: get
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/users
+          method: patch
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+      - http:
+          path: api/users
+          method: delete
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId: !Ref ApiGatewayAuthorizer
+
+
+  # TRIGGERS ===========================================================================================================
+  s3StorageUploadTrigger:
+    handler: application/functions/triggers/s3_triggers.upload_file_trigger
+    name: ${self:service}-s3-upload-file-trigger
+    maximumRetryAttempts: 2
+    dependsOn:
+      - S3BucketStorage
+    events:
+      - s3:
+          bucket: ${self:custom.s3BucketStorageName}
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: _uploads_/
+          existing: true
+    package:
+      individually: true
+      patterns:
+        - '!application/**'
+        - 'application/configuration.py'
+        - 'application/core/configuration_loader.py'
+        - 'application/core/aws/ssm.py'
+        - 'application/core/aws/s3.py'
+        - 'application/functions/triggers/s3_triggers.py'
+
+
+  CognitoPreVerificationTrigger:
+    handler: application/functions/triggers/cognito_triggers.pre_verification_trigger
+    name: ${self:service}-cognito-pre-verification-trigger
+    maximumRetryAttempts: 1
+    dependsOn:
+      - CognitoUserPool
+    events:
+      - cognitoUserPool:
+          pool: ${self:custom.cognitoUserPoolName}
+          trigger: CustomMessage
+          existing: true
+          forceDeploy: true
+    package:
+      individually: true
+      patterns:
+        - '!application/**'
+        - 'application/configuration.py'
+        - 'application/core/configuration_loader.py'
+        - 'application/core/aws/ssm.py'
+        - 'application/core/mail/mail_handler.py'
+        - 'application/core/mail/templates/snipets/*.*'
+        - 'application/core/mail/templates/cognito_*.*'
+        - 'application/functions/triggers/cognito_triggers.py'
+
+  CognitoPostVerificationTrigger:
+    handler: application/functions/triggers/cognito_triggers.post_verification_trigger
+    name: ${self:service}-cognito-post-verification-trigger
+    maximumRetryAttempts: 1
+    dependsOn:
+      - CognitoUserPool
+    events:
+      - cognitoUserPool:
+          pool: ${self:custom.cognitoUserPoolName}
+          trigger: PostConfirmation
+          existing: true
+          forceDeploy: true
+    package:
+      individually: true
+      patterns:
+        - '!application/**'
+        - 'application/configuration.py'
+        - 'application/core/configuration_loader.py'
+        - 'application/core/aws/ssm.py'
+        - 'application/core/aws/sqs.py'
+        - 'application/functions/triggers/cognito_triggers.py'
+
+  CognitoPreSignUpTrigger:
+    handler: application/functions/triggers/cognito_triggers.pre_sign_up_trigger
+    name: ${self:service}-cognito-pre-sign-up-trigger
+    maximumRetryAttempts: 1
+    dependsOn:
+      - CognitoUserPool
+    events:
+      - cognitoUserPool:
+          pool: ${self:custom.cognitoUserPoolName}
+          trigger: PreSignUp
+          existing: true
+          forceDeploy: true
+    package:
+      individually: true
+      patterns:
+        - '!application/**'
+        - 'application/configuration.py'
+        - 'application/core/configuration_loader.py'
+        - 'application/core/aws/ssm.py'
+        - 'application/core/aws/cognito.py'
+        - 'application/functions/triggers/cognito_triggers.py'
+
+  CognitoPreTokenGenerationTrigger:
+    handler: application/functions/triggers/cognito_triggers.pre_token_generation_trigger
+    name: ${self:service}-cognito-pre-token-generation-trigger
+    layers:
+      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    maximumRetryAttempts: 1
+    dependsOn:
+      - CognitoUserPool
+    events:
+      - cognitoUserPool:
+          pool: ${self:custom.cognitoUserPoolName}
+          trigger: PreTokenGeneration
+          existing: true
+          forceDeploy: true
+
+resources:
+  # API Gateway
+  - ${file(serverless_resources/aws_api_gateway.yml)}
+  # Cognito Authentication
+  - ${file(serverless_resources/aws_cognito.yml)}
+  # RDS Aurora
+  - ${file(serverless_resources/aws_rds_aurora.yml)}
+  # S3 Buckets
+  - ${file(serverless_resources/aws_s3.yml)}
+  # Cloudfront
+  #- ${file(serverless_resources/aws_cloudfront.yml)}

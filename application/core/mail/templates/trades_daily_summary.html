@@ -1,0 +1,421 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no" />
+
+  <style>
+    /* Reset styles */
+    body {
+      margin: 0;
+      padding: 0;
+      min-width: 100%;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    body,
+    table,
+    td,
+    div,
+    p,
+    a {
+      -webkit-font-smoothing: antialiased;
+      text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    .trades-table-container {
+      width: 100%;
+    }
+
+    .trades-table-container td {
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .trades-table-container .column-right div {
+      text-align: right;
+    }
+
+    .trades-table-container .red {
+      color: red;
+    }
+
+    img {
+      border: 0;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    #outlook a {
+      padding: 0;
+    }
+
+    .ReadMsgBody {
+      width: 100%;
+    }
+
+    .ExternalClass {
+      width: 100%;
+    }
+
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div {
+      line-height: 100%;
+    }
+
+    /* Rounded corners for advanced mail clients only */
+    @media all and (min-width: 700px) {
+      .container {
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -khtml-border-radius: 8px;
+      }
+
+      .container-top {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      .container-bottom {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+
+    /* Set color for auto links (addresses, dates, etc.) */
+    a,
+    a:hover {
+      color: #127DB3;
+    }
+
+    .footer a,
+    .footer a:hover {
+      color: #999999;
+    }
+  </style>
+
+  <!-- MESSAGE SUBJECT -->
+  <title>#EMAIL_TEMPLATE_TITLE#</title>
+
+</head>
+
+<!-- BODY -->
+<!-- Set message background color (twice) and text color (twice) -->
+
+<body topmargin="0" rightmargin="0" bottommargin="0" leftmargin="0" marginwidth="0" marginheight="0" width="100%" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%; height: 100%; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; line-height: 100%;background-color: #eee;	color: #000000;" bgcolor="#eee" text="#000000">
+
+  <!-- SUBJECT PREHEADER TEXT -->
+  <module name="preheader" label="Preheader">
+    <div style="display: none; max-height: 0px; overflow: hidden;">
+      <editable name="preheader">[CHECKIT] Notifications</editable>
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+      &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+    </div>
+  </module>
+
+
+  <!-- SECTION / BACKGROUND -->
+  <!-- Set message background color one again -->
+  <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; width: 100%;" class="background">
+    <tr>
+      <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; border-top-left-radius: 5px; border-top-right-radius: 5px;" bgcolor="#eee">
+
+        <!-- WRAPPER -->
+        <!-- Set wrapper width (twice) -->
+        <table border="0" cellpadding="0" cellspacing="0" align="center" width="700" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit; width: 700px; max-width: 700px; background-color: #071331;" class="wrapper">
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+					padding-top: 20px;
+					padding-bottom: 20px;">
+
+              <!-- LOGO -->
+              <!-- Image text color should be opposite to background color. Set your url, image src, alt and title. Alt text should fit the image size. Real image size should be x2. URL format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content=logo&utm_campaign={{Campaign-Name}} -->
+              <!-- <a target="_blank" style="text-decoration: none;" href="#"><img border="0" vspace="0" hspace="0" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/email_logo.png" width="150" height="auto" alt="Logo" title="Logo" style="
+						color: #000000;
+						font-size: 10px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;" /></a> -->
+              <img align="center" width="124px" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/email_logo_white.png" alt="" >
+
+            </td>
+          </tr>
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+            padding-top: 10px;
+            padding-bottom: 30px;
+            color:white;
+            font-size: 30px;
+            font-family: Manrope,Arial,sans-serif;
+            letter-spacing:1px;">
+              <div>
+                <div>Trade with traceability</div>
+                <br>
+                <br>
+                <div> and trust</div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- End of WRAPPER -->
+        </table>
+
+        <!-- WRAPPER / CONTEINER -->
+        <!-- Set conteiner background color -->
+        <table border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#FFFFFF" width="700" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit; width: 700px; max-width: 700px;" class="container">
+
+          <!-- TOOLBAR ENVIRONMENT -->
+          #ENVIRONMENT#
+
+          <!-- HEADER -->
+          <!-- Set text color and font family ("sans-serif" or "Georgia, serif") -->
+          <!-- <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 24px; font-weight: bold; line-height: 130%;
+					padding-top: 25px;
+					color: #000000;
+					font-family: sans-serif;" class="header">
+              Digital Commodity Exchange
+            </td>
+          </tr> -->
+
+
+          <!-- LINE -->
+          <!-- Set line color -->
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+					padding-top: 25px;" class="line">
+              <!-- <hr color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" /> -->
+            </td>
+          </tr>
+
+          <!-- CONTENT -->
+          <tr>
+            <td align="left" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+					padding-top: 20px;
+					padding-bottom: 25px;
+					color: #000000;
+					font-family: sans-serif;" class="paragraph">
+              <span>Dear #FIRST_NAME#.</span>
+              <br>
+              <span>Daily trades summary #DATE#</span>
+              <br>
+              <br>
+              <strong>#NEW_TRADES_TITLE#</strong>
+              <br>
+              <br>
+              <table class="trades-table-container">
+                #NEW_TRADES_TABLE#
+              </table>
+              <a href="#COGNITO_URL_CALLBACK#" target="_blank" style="text-decoration: underline;">
+                <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+                      <!-- <a href="https://#CLOUDFRONT_DOMAIN##daily_summary" target="_blank" style="text-decoration: none;color: white; font-family: sans-serif; font-size: 17px; font-weight: 400; ">GO TO CHECKIT</a> -->
+                      <tr>
+                        <td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: none; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;" bgcolor="#f18f12">
+                          <a href="https://#CLOUDFRONT_DOMAIN##daily_summary" target="_blank" style="text-decoration: none;color: white; font-family: sans-serif; font-size: 17px; font-weight: 400; ">GO TO CHECKIT</a>
+                        </td>
+                      </tr>
+    
+                </table>
+              </a>
+              <br>
+              <br>
+              <strong>#EXPIRING_TRADES_TITLE#</strong>
+              <br>
+              <br>
+              <table class="trades-table-container">
+                #EXPIRING_TRADES_TABLE#
+              </table>
+              <a href="#COGNITO_URL_CALLBACK#" target="_blank" style="text-decoration: none;">
+                <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: none; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;" bgcolor="#f18f12">
+                      <a href="https://#CLOUDFRONT_DOMAIN##daily_summary" target="_blank" style="text-decoration: none;color: white; font-family: sans-serif; font-size: 17px; font-weight: 400; ">GO TO CHECKIT</a>
+                    </td>
+                  </tr>
+                </table>
+              </a>
+            </td>
+          </tr>
+
+          <!-- LINE -->
+          <!-- Set line color -->
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+					padding-top: 0px;" class="line">
+              <hr color="#E0E0E0" align="center" width="100%" size="1" noshade style="margin: 0; padding: 0;" />
+            </td>
+          </tr>
+
+
+          <!-- BUTTON -->
+          <!-- Set button background color at TD, link/text color at A and TD, font family ("sans-serif" or "Georgia, serif") at TD. For verification codes add "letter-spacing: 5px;". Link format: http://domain.com/?utm_source={{Campaign-Source}}&utm_medium=email&utm_content={{Button-Name}}&utm_campaign={{Campaign-Name}} -->
+          <!-- <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+                    padding-top: 25px;
+                    padding-bottom: 15px;" class="button">
+              <span style="font-family: sans-serif;" class="paragraph">CLICK HERE TO <a href="https://#CLOUDFRONT_DOMAIN#/#UNSUBSCRIBE_PATH#?reference=#SUBSCRIPTION_REFERENCE#" target="_blank" style="text-decoration: underline">UNSUBSCRIBE</a> TO CHECKIT DAILY SUMMARY</span>
+              <br>
+              <br> -->
+              <!-- <a href="#COGNITO_URL_CALLBACK#/#UNSUBSCRIBE_PATH#?reference=#SUBSCRIPTION_REFERENCE#" target="_blank" style="text-decoration: underline;">
+                <table border="0" cellpadding="0" cellspacing="0" align="center" style="max-width: 240px; min-width: 120px; border-collapse: collapse; border-spacing: 0; padding: 0;">
+                  <tr>
+                    <td align="center" valign="middle" style="padding: 12px 24px; margin: 0; text-decoration: underline; border-collapse: collapse; border-spacing: 0; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px;" bgcolor="#005ea5">
+                      <a href="https://#CLOUDFRONT_DOMAIN#/#UNSUBSCRIBE_PATH#?reference=#SUBSCRIPTION_REFERENCE#" target="_blank" style="text-decoration: underline;color: #FFFFFF; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 120%;">UNSUBSCRIBE</a>
+                    </td>
+                  </tr>
+                </table>
+              </a> -->
+            <!-- </td>
+          </tr> -->
+
+          <!-- PARAGRAPH -->
+          <!-- Set text color and font family ("sans-serif" or "Georgia, serif"). Duplicate all text styles in links, including line-height -->
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 17px; font-weight: 400; line-height: 160%;
+					padding-top: 20px;
+					padding-bottom: 25px;
+					color: #000000;
+					font-family: sans-serif;" class="paragraph">
+              Need help? Contact <a href="mailto:support@checkit.group" target="_blank" style="color: #005ea5; font-family: sans-serif; font-size: 17px; font-weight: 400; line-height: 160%;">support@checkit.group</a>
+            </td>
+          </tr>
+
+          <!-- End of WRAPPER -->
+        </table>
+
+
+
+        <!-- WRAPPER -->
+        <!-- Set wrapper width (twice) -->
+        <table border="0" cellpadding="0" cellspacing="0" align="center" width="700" style="border-collapse: collapse; border-spacing: 0; padding: 0; width: inherit;
+        width: 700px; max-width: 700px; background-color: #071331;" class="wrapper">
+        <tr>
+          <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+          padding-top: 25px; text-align: center;" class="social-icons"><table
+          width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
+            <img align="center" width="124px" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/email_logo_white.png" alt="" >
+          </td>
+			</tr>
+        <tr>
+          <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+          padding-top: 25px; text-align: center; color:white; font-size: 12px; font-family: Manrope,Arial,sans-serif;" class="social-icons"><table
+          width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
+            <span>Copyright © #YEAR# CHECKIT. <br> All rights reserved.</span>
+          </td>
+			  </tr>
+          <!-- SOCIAL NETWORKS -->
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%;
+					                                         padding-top: 25px;" class="social-icons">
+              <table width="256" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse: collapse; border-spacing: 0; padding: 0;">
+                <tr>
+
+                  <!-- SOCIAL FACEBOOK -->
+                  <td align="center" valign="middle" style="width:21px; margin: 0; padding: 0; padding-left: 0px; padding-right: 0px; border-collapse: collapse; border-spacing: 0;">
+                    <a target="_blank" href="https://www.facebook.com/CHECKITGlobal" style="text-decoration: none; margin-left: 10px;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block; color: white;" alt="F" title="Facebook" width="20" height="20" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/social_facebook_white.png"></a>
+                    <a target="_blank" href="https://www.linkedin.com/company/commodityexchange" style="text-decoration: none; margin-left: 10px;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block; color: white;" alt="L" title="Linkedin" width="20" height="20" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/social_linkedin_white.png"></a>
+                    <a target="_blank" href="https://wa.me/34682636512" style="text-decoration: none; margin-left: 10px;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block; color: white;" alt="W" title="Whatsaap" width="20" height="20" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/social_whatsaap_white.png"></a>
+                  </td>
+
+                  <!-- SOCIAL INSTAGRAM -->
+                  <!-- <td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank" href="https://www.instagram.com/checkit_global" style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block; color: #000000;" alt="I" title="Instagram" width="20" height="20" src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/social_instagram.png"></a>
+                  </td> -->
+
+                  <!-- SOCIAL LINKEDIN -->
+
+                  <!--							&lt;!&ndash; SOCIAL TWITTER &ndash;&gt;-->
+                  <!--							<td align="center" valign="middle" style="margin: 0; padding: 0; padding-left: 10px; padding-right: 10px; border-collapse: collapse; border-spacing: 0;"><a target="_blank"-->
+                  <!--								href="#" style="text-decoration: none;"><img border="0" vspace="0" hspace="0" style="padding: 0; margin: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: inline-block; color: #000000;"-->
+                  <!--								alt="T" title="Twitter"-->
+                  <!--								width="20" height="20"-->
+                  <!--								src="https://#CLOUDFRONT_DOMAIN#/assets/images/email/social_twitter.png"></a>-->
+                  <!--							</td>-->
+
+                  <!-- SOCIAL WHATSAAP -->
+
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 12px; font-weight: 400; line-height: 150%;
+					padding-top: 20px;
+					padding-bottom: 20px;
+					color: white;
+					font-family: Manrope,Arial,sans-serif;" class="footer">
+              <span style="font-family: sans-serif;" class="paragraph">Click here to <a href="https://#CLOUDFRONT_DOMAIN#/#UNSUBSCRIBE_PATH#?reference=#SUBSCRIPTION_REFERENCE#" target="_blank" style="text-decoration: underline">unsubscribe</a> to checkit daily summary</span>
+            </td>
+          </tr>
+          <!-- <tr>
+            <td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 0; padding-left: 6.25%; padding-right: 6.25%; width: 87.5%; font-size: 13px; font-weight: 400; line-height: 150%;
+					padding-top: 20px;
+					padding-bottom: 20px;
+					color: white;
+					font-family: sans-serif;" class="footer">
+              This email has been generated automatically, please do not reply to this communication. If you need help, contact technical support.
+            </td>
+          </tr> -->
+
+          <!-- End of WRAPPER -->
+        </table>
+
+        <!-- End of SECTION / BACKGROUND -->
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

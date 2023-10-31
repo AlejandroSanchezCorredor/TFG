@@ -1,0 +1,131 @@
+Resources:
+  # ====================================================================================================================
+  # [DEFINITION] SECURITY GROUP > Access DB from Grupo Vermon IP
+  # ====================================================================================================================
+  RDSAuroraSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: MySQL/Aurora Grupo Vermon
+      GroupDescription: RDS access from Grupo Vermon (EC2)
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 85.55.204.238/32
+          FromPort: 3306
+          ToPort: 3306
+          Description: Office Checkit
+        - IpProtocol: tcp
+          CidrIp: 79.154.23.192/32
+          FromPort: 3306
+          ToPort: 3306
+          Description: Office GrupoVermon
+        - IpProtocol: tcp
+          CidrIp: 182.55.48.186/32
+          FromPort: 3306
+          ToPort: 3306
+          Description: Office Client
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 3306
+          ToPort: 3306
+          Description: Lambda Access (public)
+
+        # TODO: Lambda public access ignore Office <*> restrictions
+
+  # ====================================================================================================================
+  # [DEFINITION] CLUSTER DB > Custom parameter group
+  # ====================================================================================================================
+  RDSAuroraClusterParameterGroupV2:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Parameter group for the Serverless Aurora V2 RDS DB.
+      Family: ${self:custom.appEnvironment.rdsFamily}
+      Parameters:
+        sql_mode: IGNORE_SPACE
+        time_zone: UTC
+        max_connections: 1000
+
+  # ====================================================================================================================
+  # [DEFINITION] CLUSTER DB > Aurora MySQL
+  # ====================================================================================================================
+  DBAuroraClusterV2:
+    Type: AWS::RDS::DBCluster
+    Properties:
+      DBClusterIdentifier: ${self:custom.rdsClusterName}-V2
+      DatabaseName: ${self:custom.rdsDatabaseName}
+      Engine: aurora-mysql
+      EngineVersion: ${self:custom.appEnvironment.rdsEngineVersion}
+      ServerlessV2ScalingConfiguration: ${self:custom.appEnvironment.rdsServerlessV2ScalingConfiguration}
+      MasterUsername: ${self:provider.environment.RDS_MASTER_USER}
+      MasterUserPassword: ${self:provider.environment.RDS_MASTER_PASSWORD}
+      EngineMode: provisioned
+      EnableHttpEndpoint: true
+      DBClusterParameterGroupName: !Ref RDSAuroraClusterParameterGroupV2
+      VpcSecurityGroupIds:
+        - ${self:custom.appSecurity.securityGroupId}
+        - !GetAtt RDSAuroraSecurityGroup.GroupId
+
+  # ====================================================================================================================
+  # [DEFINITION] INSTANCE DB > Custom parameter group
+  # ====================================================================================================================
+  RDSAuroraInstanceParameterGroupV2:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+        Description: Parameter group for the Serverless Aurora V2 RDS Instance.
+        Family: ${self:custom.appEnvironment.rdsFamily}
+        Parameters:
+            max_connections: 1000
+            wait_timeout: 300
+
+  # ====================================================================================================================
+  # [DEFINITION] INSTANCE DB > Aurora MySQL
+  # ====================================================================================================================
+  RDSAuroraInstanceV2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub ${self:custom.rdsInstanceName}-V2
+      DBClusterIdentifier: !Ref DBAuroraClusterV2
+      Engine: aurora-mysql
+      EngineVersion: ${self:custom.appEnvironment.rdsEngineVersion}
+      DBInstanceClass: ${self:custom.appEnvironment.rdsDBInstanceClass}
+      PubliclyAccessible: true
+      DBParameterGroupName: !Ref RDSAuroraInstanceParameterGroupV2
+
+  # ====================================================================================================================
+  # [DEFINITION] CLUSTER DOMAIN > Aurora MySQL Endpoint
+  # ====================================================================================================================
+  DNSRecordSet:
+    Type: AWS::Route53::RecordSet
+    DependsOn:
+      - DBAuroraClusterV2
+      - RDSAuroraInstanceV2
+    Properties:
+      HostedZoneName: '${self:custom.route53DomainName}.'
+      Name: '${self:custom.rdsDomainName}'
+      Type: CNAME
+      TTL: '300'
+      ResourceRecords:
+        - !GetAtt DBAuroraClusterV2.Endpoint.Address
+
+# ======================================================================================================================
+# [OUTPUTS] INFORMATION > Log information + Outputs vars to config environment vars
+# ======================================================================================================================
+Outputs:
+  AuroraSecurityGroup:
+    Description: Security group aditional to Aurora
+    Value: !GetAtt RDSAuroraSecurityGroup.GroupId
+
+  AuroraClusterEndpoint:
+    Description: The cluster endpoint (write)
+    Value: !GetAtt DBAuroraClusterV2.Endpoint.Address
+
+  AuroraClusterReadEndpoint:
+    Description: The cluster endpoint (read)
+    Value: !GetAtt DBAuroraClusterV2.ReadEndpoint.Address
+
+  AuroraInstanceEndpoint:
+    Description: The database endpoint
+    Value: !GetAtt RDSAuroraInstanceV2.Endpoint.Address
+
+  AuroraInstancePort:
+    Description: The database port
+    Value: !GetAtt RDSAuroraInstanceV2.Endpoint.Port

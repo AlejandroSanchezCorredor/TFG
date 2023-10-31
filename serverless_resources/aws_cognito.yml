@@ -1,0 +1,197 @@
+Resources:
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO USER POOL
+  # ====================================================================================================================
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: ${self:custom.cognitoUserPoolName}
+      Schema:
+        - Name: name
+          Mutable: true
+          AttributeDataType: String
+        - Name: email
+          Required: true
+          Mutable: true
+          AttributeDataType: String
+        - Name: phone_number
+          Mutable: true
+          AttributeDataType: String
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 30
+      EmailConfiguration:
+        EmailSendingAccount: DEVELOPER
+        From: ${self:custom.sesEmailSenderAddress}
+        ReplyToEmailAddress: ${self:custom.sesEmailSenderAddress}
+        SourceArn: !Sub ${self:custom.sesEmailSenderArn}
+
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO USER POOL DOMAIN
+  # ====================================================================================================================
+  CognitoUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId:
+        Ref: CognitoUserPool
+      Domain: ${self:service}-${self:provider.stage}
+      # EXTRA: Custom domain with certificate
+      # Domain: "<example.com>"
+      # CustomDomainConfig:
+        #CertificateArn: !Ref CertificateArn
+
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO USER POOL CLIENT
+  # ====================================================================================================================
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - CognitoUserPool
+    Properties:
+      ClientName: ${self:custom.cognitoUserPoolClientName}
+      UserPoolId:
+        Ref: CognitoUserPool
+      ExplicitAuthFlows:
+        - ADMIN_NO_SRP_AUTH
+        - USER_PASSWORD_AUTH
+      GenerateSecret: false
+      #SupportedIdentityProviders:
+#     #   - COGNITO
+      #  - Google
+      # TODO: Remove localhost
+      CallbackURLs:
+        - http://localhost:4200/
+        - 'https://${self:custom.cloudFrontDomainName}'
+      # TODO: Remove localhost
+      LogoutURLs:
+        - http://localhost:4200/
+        - 'https://${self:custom.cloudFrontDomainName}'
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows:
+        - implicit
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+        - aws.cognito.signin.user.admin
+
+
+  # ####################################################################################################################
+  # > AWS PINPOINT (Analytic) > Amplify require user permissions #######################################################
+
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO USER POOL IDENTITY
+  # ====================================================================================================================
+  CognitoIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      IdentityPoolName: ${self:custom.cognitoIdentityPoolName}
+      # Don't allow unauthenticated users
+      AllowUnauthenticatedIdentities: false
+      # Link to our User Pool
+      CognitoIdentityProviders:
+        - ClientId:
+            Ref: CognitoUserPoolClient
+          ProviderName:
+            Fn::GetAtt: ["CognitoUserPool", "ProviderName"]
+
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO USER POOL IDENTITY > ROLE FOR AUTH
+  # ====================================================================================================================
+  CognitoIdentityPoolRoles:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId:
+        Ref: CognitoIdentityPool
+      Roles:
+        authenticated:
+          Fn::GetAtt: ["CognitoAuthRole", "Arn"]
+        unauthenticated:
+          Fn::GetAtt: [ "CognitoAuthRole", "Arn" ]
+
+  # ====================================================================================================================
+  # [DEFINITION] COGNITO ROLE AUTH DEFINITION
+  # ====================================================================================================================
+  CognitoAuthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Federated: 'cognito-identity.amazonaws.com'
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+              - "sts:TagSession"
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud':
+                  Ref: CognitoIdentityPool
+              'ForAnyValue:StringLike':
+                'cognito-identity.amazonaws.com:amr': authenticated
+      Policies:
+        - PolicyName: 'CognitoAuthorizedPolicy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Allow users to invoke our API
+              - Effect: 'Allow'
+                Action:
+                  - 'mobiletargeting:UpdateEndpoint'
+                  - 'mobiletargeting:PutEvents'
+                Resource: '*'
+
+              # Allow users to use storage folder _update_ inside our S3 bucket (usage for temporal uploads)
+              - Effect: 'Allow'
+                Action:
+                  - 's3:GetObject'
+                  - 's3:PutObject'
+                  - 's3:PutObjectTagging'
+                  - 's3:DeleteObject'
+                Resource:
+                  - Fn::Join:
+                      - ''
+                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+                        - '/_uploads_/public/*'
+                  - Fn::Join:
+                      - ''
+                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+                        - '/_uploads_/private/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}/*'
+                  - Fn::Join:
+                      - ''
+                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+                        - '/_uploads_/protected/'
+                        - '$'
+                        - '{cognito-identity.amazonaws.com:sub}/*'
+
+  # ####################################################################################################################
+
+
+# ======================================================================================================================
+# [OUTPUTS] INFORMATION > Log information
+# ======================================================================================================================
+Outputs:
+  CognitoUserPool:
+    Description: ARN Cognito user pool
+    Value: !GetAtt CognitoUserPool.Arn
+
+  CognitoUserPoolDomain:
+    Description: HOST Cognito user pool domain
+    Value: !Ref CognitoUserPoolDomain
+
+  CognitoUserPoolClient:
+    Description: ID Cognito user pool client
+    Value: !Ref CognitoUserPoolClient

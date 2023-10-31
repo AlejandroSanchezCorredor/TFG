@@ -1,0 +1,20 @@
+{
+  "name": "checkit",
+  "description": "",
+  "version": "0.1.2",
+  "scripts": {
+    "sls": "sls",
+    "serverless": "serverless"
+  },
+  "dependencies": {
+    "serverless": "^3.27.0"
+  },
+  "devDependencies": {
+    "serverless-certificate-creator": "^1.6.0",
+    "serverless-domain-manager": "^6.0.2",
+    "serverless-export-env": "^2.1.0",
+    "serverless-offline": "^12.0.4",
+    "serverless-offline-scheduler": "^0.5.0",
+    "serverless-python-requirements": "^5.4.0"
+  }
+}
