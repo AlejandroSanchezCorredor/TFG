@@ -176,17 +176,6 @@ functions:
       #    authorizer:
       #      type: COGNITO_USER_POOLS
       #      authorizerId: !Ref ApiGatewayAuthorizer
-  scheduler:
-    handler: application/handler.scheduler
-    layers:
-      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
-    name: ${self:service}-handler-scheduler
-    memorySize: 512
-    events:
-      - schedule:
-          name: prueba
-          description: 'prueba1'
-          rate: rate(1 min)
 
 
 

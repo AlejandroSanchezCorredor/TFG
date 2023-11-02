@@ -9,15 +9,15 @@ custom:
       name: ${self:provider.stage}-requirements-layer
       description: Python requirements lambda layer
       compatibleRuntimes:
-        - python3.10
+        - python3.9
     dockerizePip: true
-    dockerImage: public.ecr.aws/sam/build-python3.10:latest
+    dockerImage: public.ecr.aws/sam/build-python3.9:latest
     fileName: requirements.txt
     slim: true
 
 provider:
   name: aws
-  runtime: python3.10
+  runtime: python3.9
   region: eu-west-1
   stage: ${opt:stage, 'develop'}
   profile: ${opt:aws-profile, 'checkit_cli'}
