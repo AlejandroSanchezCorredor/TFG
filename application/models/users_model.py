@@ -1,6 +1,4 @@
-import uuid
-from application.core.sql import db, Base, BaseModel
-from sqlalchemy.orm import relationship
+from application.core.sql import db, BaseModel
 
 
 class Users(BaseModel):

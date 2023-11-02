@@ -9,7 +9,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: python3.10
+  runtime: python3.9
   endpointType: REGIONAL
   memorySize: 512
   timeout: 15
@@ -144,31 +144,50 @@ functions:
       - http:
           path: api/users
           method: post
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
           cors: true
       - http:
           path: api/users
           method: get
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
           cors: true
       - http:
-          path: api/users
-          method: patch
+          path: api/user
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
           cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
-      - http:
-          path: api/users
-          method: delete
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId: !Ref ApiGatewayAuthorizer
+      #- http:
+      #    path: api/users
+      #    method: patch
+      #    cors: true
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
+      #- http:
+      #    path: api/users
+      #    method: delete
+      #    cors: true
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
+  scheduler:
+    handler: application/handler.scheduler
+    layers:
+      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    name: ${self:service}-handler-scheduler
+    memorySize: 512
+    events:
+      - schedule:
+          name: prueba
+          description: 'prueba1'
+          rate: rate(1 min)
+
 
 
   # TRIGGERS ===========================================================================================================
@@ -289,4 +308,4 @@ resources:
   # S3 Buckets
   - ${file(serverless_resources/aws_s3.yml)}
   # Cloudfront
-  #- ${file(serverless_resources/aws_cloudfront.yml)}
+  - ${file(serverless_resources/aws_cloudfront.yml)}
