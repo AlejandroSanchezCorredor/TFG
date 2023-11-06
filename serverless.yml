@@ -169,13 +169,75 @@ functions:
       #    authorizer:
       #      type: COGNITO_USER_POOLS
       #      authorizerId: !Ref ApiGatewayAuthorizer
-      #- http:
-      #    path: api/users
-      #    method: delete
-      #    cors: true
+
+
+      - http:
+          path: api/categories
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/categories
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/category
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/categories
+          method: patch
+          cors: true
       #    authorizer:
       #      type: COGNITO_USER_POOLS
       #      authorizerId: !Ref ApiGatewayAuthorizer
+      - http:
+          path: api/categories
+          method: delete
+          cors: true
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
+      - http:
+          path: api/products
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/products
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/product
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/products
+          method: patch
+          cors: true
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
+      - http:
+          path: api/products
+          method: delete
+          cors: true
 
 
 
@@ -226,28 +288,6 @@ functions:
         - 'application/core/mail/mail_handler.py'
         - 'application/core/mail/templates/snipets/*.*'
         - 'application/core/mail/templates/cognito_*.*'
-        - 'application/functions/triggers/cognito_triggers.py'
-
-  CognitoPostVerificationTrigger:
-    handler: application/functions/triggers/cognito_triggers.post_verification_trigger
-    name: ${self:service}-cognito-post-verification-trigger
-    maximumRetryAttempts: 1
-    dependsOn:
-      - CognitoUserPool
-    events:
-      - cognitoUserPool:
-          pool: ${self:custom.cognitoUserPoolName}
-          trigger: PostConfirmation
-          existing: true
-          forceDeploy: true
-    package:
-      individually: true
-      patterns:
-        - '!application/**'
-        - 'application/configuration.py'
-        - 'application/core/configuration_loader.py'
-        - 'application/core/aws/ssm.py'
-        - 'application/core/aws/sqs.py'
         - 'application/functions/triggers/cognito_triggers.py'
 
   CognitoPreSignUpTrigger:

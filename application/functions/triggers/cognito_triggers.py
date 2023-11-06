@@ -69,31 +69,6 @@ def pre_verification_trigger(event, context):
     return event
 
 
-def post_verification_trigger(event, context):
-    """Amazon Cognito invokes this trigger after a new user is confirmed, allowing
-    you to send custom messages or to add custom logic. For example, you could use
-    this trigger to gather new user data.
-
-    :param event: dict
-    :param context: AWS Lambda context
-    :return: event (dict)
-    """
-
-    import json
-    from application.core.aws.sqs import sqs_send_message
-
-    user_crm_id = event.get('request').get('userAttributes').get('custom:crm_id', None)
-
-    # Update Zoho CRM
-    sqs_send_message(queueUrl='queue_zoho_crm', queueMessage=json.dumps({
-        "user_crm_id": user_crm_id,
-        "crm_data": {'Email_verified': True},
-        "crm_operation": "UPDATE_LEAD"
-    }))
-
-    return event
-
-
 # TODO: Revise
 def pre_sign_up_trigger(event, context):
     """This trigger is invoked prior to token generation, allowing you to
@@ -171,22 +146,20 @@ def pre_token_generation_trigger(event, context):
 
         if _user_email:
             # Recover permissions from this user
-            user_id, company_id, company_name, permissions = get_user_permissions(email=_user_email, update_access=auth_flow)
+            user_id = get_user_permissions(email=_user_email, update_access=auth_flow)
+            #user_id, permissions = get_user_permissions(email=_user_email, update_access=auth_flow)
             print('[PRE TOKEN] PERMISSIONS', permissions)
 
             # Normalize data to include in token data
-            permissions = json.dumps(permissions, separators=(',', ':')).replace('\"', "'")
+            #permissions = json.dumps(permissions, separators=(',', ':')).replace('\"', "'")
     except Exception as e:
         # TODO: Include handler error triggers
         print("[PRE TOKEN] EXCEPTION", e)
 
-
     event['response']['claimsOverrideDetails'] = {
         'claimsToAddOrOverride': {
-            'user_id': user_id,
-            'company_id': company_id,
-            'company_name': company_name,
-            'access': permissions
+            'user_id': user_id#,
+            #'access': permissions
         }
     }
 

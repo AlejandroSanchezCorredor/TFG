@@ -14,6 +14,7 @@ def post_user(event, context):
     body = json.loads(event.get('body', None))
     return default_create(model_or_constructor=Users, dict_=body)
 
+
 @HTTPRouter.route('api/users', 'GET')
 def get_users(event, context):
     return default_list(model_class=Users)
