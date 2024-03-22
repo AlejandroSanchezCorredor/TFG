@@ -20,7 +20,6 @@ def get_users(event, context):
     return default_list(model_class=Users)
 
 
-
 @HTTPRouter.route('api/user', 'GET')
 def get_user(event, context):
     id = get_request_query_parameter('id', event, default_value=None)

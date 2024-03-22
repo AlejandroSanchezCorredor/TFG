@@ -11,5 +11,8 @@ requests-toolbelt==0.9.1
 SQLAlchemy==1.4.39
 sqlalchemy-mixins==1.5
 zeep==4.1.0
+openai==1.13.3
+twilio==9.0.2
+
 
 

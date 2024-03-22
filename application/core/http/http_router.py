@@ -9,7 +9,7 @@ class HTTPRouter:
     handlers = defaultdict(dict)
 
     @staticmethod
-    def route_request(event, context):
+    def route_request(event, context): # Buscamos si existe el recurso
         resource = re.sub(r'^/?(.*?)/?$', r'\1', event['resource'])
         if resource in HTTPRouter.handlers:
             http_method = event['httpMethod'].lower()
@@ -21,7 +21,7 @@ class HTTPRouter:
         raise HTTPError(404)
 
     @staticmethod
-    def route(resource, *http_verbs):
+    def route(resource, *http_verbs): 
         def inner(funct):
             @wraps(funct)
             def wrapper(*args, **kwargs):

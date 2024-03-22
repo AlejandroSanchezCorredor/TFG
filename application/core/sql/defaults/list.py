@@ -13,8 +13,9 @@ QS_ORDER_BY = '_order_by'
 CONDITIONS_RELATION_SPLITTER = '.'
 
 
-def _get_pagination(query_string):
-    page = query_string.get(QS_PAGE, 0)
+def _get_pagination(query_string): # Por ejemplo, si una API devuelve una lista de 1000 resultados y se establece un tamaño de página de 10, el cliente puede solicitar la primera página (resultados del 1 al 10), la segunda página (resultados del 11 al 20) y así sucesivamente, hasta llegar a la página final (resultados del 991 al 1000).
+    # Ej de entrada: {"id": "123", "name": "John"}
+    page = query_string.get(QS_PAGE, 0) # Si el _page está presente, devuelve su valor, de lo contrario, devuelve 0, Ej: https://example.com/api/users?_page=2, ahí devolvería 2
     try:
         page = int(page)
     except ValueError:
@@ -81,7 +82,7 @@ def _get_custom_schema(query_string):
 
 
 def default_list(model_class, query_where={}, custom_parser=None, schema=None):
-    query_string = current_request.event['queryStringParameters'] or {}
+    query_string = current_request.event['queryStringParameters'] or {} # Los parámetros de cadena de consulta pueden ser: Ej: https://example.com/api/resource?id=123&name=John, id=123 y name=John, en formato diccionario: {"id": "123", "name": "John"}
     page, page_size = _get_pagination(query_string)
     sort_attrs = _get_order_by(query_string)
     filters = _get_query_string_filters(query_string)

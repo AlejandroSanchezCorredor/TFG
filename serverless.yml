@@ -238,7 +238,149 @@ functions:
           path: api/products
           method: delete
           cors: true
+      
 
+
+      - http:
+          path: api/books
+          method: get
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/books
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/books
+          method: patch
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/books
+          method: delete
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+
+
+      - http:
+          path: api/chats
+          method: get
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/chats
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/chats
+          method: patch
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/chats
+          method: delete
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+
+
+      - http:
+          path: api/flats
+          method: get
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/flats
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/flats
+          method: patch
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+      - http:
+          path: api/flats
+          method: delete
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+
+      - http:
+          path: api/myusers
+          method: post
+          #authorizer:
+          #  type: COGNITO_USER_POOLS
+          #  authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/myusers
+          method: get
+      #    authorizer:
+      #      type: COGNITO_USER_POOLS
+      #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+      - http:
+          path: api/myusers
+          method: get
+          #    authorizer:
+          #      type: COGNITO_USER_POOLS
+          #      authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true
+
+
+  scrapToChatGPT:
+    handler: application/handler.scheduler
+    name: ${self:service}-handler-scheduler
+    memorySize: 512
+    # layers ??????????????????????
+    events:
+      - schedule: rate(15 minutes) # Cada 15 min todos los dias
+
+    
+  scrapToDynamoDB:
+    handler: application/handler.scheduler
+    name: ${self:service}-handler-scheduler
+    memorySize: 512
+    # layers ??????????????????????
+    events:
+      - schedule: cron(15 * * * * *)
 
 
   # TRIGGERS ===========================================================================================================
