@@ -12,9 +12,11 @@ import json
 def send_to_whatsapp(gpt_response,number): # Enviamos por whatsapp la respuesta generada por ChatGPT
     from_whatsapp_number='whatsapp:+14155238886'
     # from_sms_number='+15677043718'
-    account_sid = 'xxx'
-    auth_token = 'xxx'
-    client = Client(account_sid, auth_token)
+
+    # Aqui irian
+    # Las credenciales
+
+    client = Client("Credencial1", "Credencial2")
 
     message = client.messages.create(
     from_= from_whatsapp_number,
