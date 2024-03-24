@@ -12,8 +12,8 @@ import json
 def send_to_whatsapp(gpt_response,number): # Enviamos por whatsapp la respuesta generada por ChatGPT
     from_whatsapp_number='whatsapp:+14155238886'
     # from_sms_number='+15677043718'
-    account_sid = 'AC2a348837141507909bf4eff6eb4b388d'
-    auth_token = 'ed607f6b825fe38d2713359c9b95fb69'
+    account_sid = 'xxx'
+    auth_token = 'xxx'
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
