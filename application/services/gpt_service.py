@@ -7,7 +7,7 @@ import json
 # La información que le pasaremos sobre los pisos será: Nombre, comentarios, puntuaciones, direccion, estado, precio (en la página pone precios pagados por persona y noche
 # pero no un precio exacto)
 
-# La información que le pasaremos sobre la conversación será: emisor, recepto, fecha y contenido (Al final no)
+# La información que le pasaremos sobre la conversación será: emisor, recepto, fecha y contenido (Al final no.)
 
 def send_to_whatsapp(gpt_response,number): # Enviamos por whatsapp la respuesta generada por ChatGPT
     from_whatsapp_number='whatsapp:+14155238886'
