@@ -6,51 +6,17 @@ environment:
   production:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
-    # ROUTE53
-    route53DomainName: checkit.grupovermon.link
-    # CLOUDFRONT (API GATEWAY & DOMAIN)
-    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
-    cloudFrontAcmCertificateArn: arn:aws:acm:us-east-1:177771810234:certificate/a482244a-136b-4d7b-b3aa-09359ba447bb
     # ENABLE SCHEDULE
     enableSchedule: true
-    # RDS
-    rdsFamily: aurora-mysql8.0
-    rdsEngineVersion: 8.0.mysql_aurora.3.02.0
-    rdsDBInstanceClass: db.serverless
-    rdsServerlessV2ScalingConfiguration:
-        MinCapacity: 1
-        MaxCapacity: 2
 
   preproduction:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
-    # ROUTE53
-    route53DomainName: preproduction.checkit.grupovermon.link
-    # CLOUDFRONT (API GATEWAY & DOMAIN)
-    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
-    cloudFrontAcmCertificateArn: arn:aws:acm:us-east-1:177771810234:certificate/7dfecbce-c1a1-4fbc-b1fc-529f77f900d0
     # ENABLE SCHEDULE
     enableSchedule: true
-    # RDS
-    rdsFamily: aurora-mysql8.0
-    rdsEngineVersion: 8.0.mysql_aurora.3.02.0
-    rdsDBInstanceClass: db.serverless
-    rdsServerlessV2ScalingConfiguration:
-        MinCapacity: 0.5
-        MaxCapacity: 1
 
   develop:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
-    # ROUTE53
-    route53DomainName: develop.checkit.grupovermon.link
-    # CLOUDFRONT (API GATEWAY & DOMAIN)
-    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
-    cloudFrontAcmCertificateArn: arn:aws:acm:us-east-1:177771810234:certificate/742e9c64-c562-4844-80b7-a9f489c6d97c
     # ENABLE SCHEDULE
     enableSchedule: false
-    # RDS
-    rdsFamily: aurora-mysql5.7
-    rdsEngineVersion: 5.7
-    rdsDBInstanceClass: db.t3.small
-    rdsServerlessV2ScalingConfiguration: !Ref "AWS::NoValue"

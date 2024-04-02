@@ -1,9 +1,6 @@
 import json
-from sqlalchemy.event import listens_for
-from application.core.configuration_loader import get_configuration
-from application.core.http import HTTPRouter, get_request_query_parameter, jsonify, HTTPError
-from application.core.sql.defaults import default_list, default_get, default_create, default_update, default_insert, default_delete
-
+from application.core.http import HTTPRouter, get_request_query_parameter
+from application.core.sql.defaults import default_list, default_get, default_create
 from application.models.users_model import Users
 
 

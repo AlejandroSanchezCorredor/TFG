@@ -1,7 +1,0 @@
-[comment]: <> (TODO: Update readme)
-Generic single-database configuration.
-
-Relevant Commands
-> alembic revision --autogenerate -m '<revision_description>'
-> alembic upgrade head
-> alembic downgrade -1

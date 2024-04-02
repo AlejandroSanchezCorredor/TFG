@@ -4,7 +4,7 @@ import logging
 from application.core.aws.ssm import get_parameter
 
 class BaseConfiguration(object):
-    APP_SERVICE = os.environ.get('AWS_SERVICE', 'checkit-application')
+    APP_SERVICE = os.environ.get('AWS_SERVICE', 'TFG_Booking-application')
     APP_BOT = 'bot@system'
 
     # AWS CONFIGURATION
@@ -15,17 +15,8 @@ class BaseConfiguration(object):
     COGNITO_USER_POOL_ID = os.getenv('COGNITO_USER_POOL_ID', None)
     COGNITO_USER_POOL_CLIENT_ID = os.getenv('COGNITO_USER_POOL_CLIENT_ID', None)
 
-    # > AWS SERVICE: S3
-    S3_BUCKET_STORAGE = os.getenv('S3_BUCKET_STORAGE', None)
-
     # > AWS SERVICE: SES
     SES_EMAIL_SENDER = os.getenv('SES_EMAIL_SENDER_ADDRESS', None)
-
-    # > AWS SERVICE: SQS
-    SQS_EMAIL_NOTIFICATION = os.getenv('SQS_EMAIL_NOTIFICATION', None)
-
-    # > AWS SERVICE: CLOUDFRONT DOMAIN
-    CLOUDFRONT_DOMAIN = os.getenv('CF_DOMAIN', None)
 
     # DATABASE CONFIGURATION
     DATABASE_TYPE = 'mysql+pymysql'

@@ -1,4 +1,4 @@
-service: checkit-application-requirements
+service: TFG_Booking-application-requirements
 
 plugins:
   - serverless-python-requirements
@@ -20,7 +20,7 @@ provider:
   runtime: python3.9
   region: eu-west-1
   stage: ${opt:stage, 'develop'}
-  profile: ${opt:aws-profile, 'checkit_cli'}
+  profile: ${opt:aws-profile, 'Booking_cli'}
 
 package:
   patterns:

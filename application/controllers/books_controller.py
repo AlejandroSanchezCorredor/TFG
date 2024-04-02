@@ -1,5 +1,5 @@
 import json
-from application.core.http import HTTPRouter, get_request_query_parameter, jsonify
+from application.core.http import HTTPRouter, get_request_query_parameter
 from application.core.sql.defaults import default_list, default_get, default_create, default_delete, default_update
 from application.models.books_model import Books
 

@@ -2,7 +2,7 @@ import boto3
 from application.core.configuration_loader import get_configuration
 
 
-def send_email(message, recipient, subject="CHECKIT Notification", sender=None, monitor=False, charset="UTF-8"):
+def send_email(message, recipient, subject="TFG_Booking Notification", sender=None, monitor=False, charset="UTF-8"):
     configuration = get_configuration()
 
     ses_client = boto3.client('ses')
@@ -23,7 +23,7 @@ def send_email(message, recipient, subject="CHECKIT Notification", sender=None, 
                 'Data': subject,
             },
         },
-        Source=f'CHECKIT Platform <{sender or configuration.SES_EMAIL_SENDER}>',
+        Source=f'TFG_Booking Platform <{sender or configuration.SES_EMAIL_SENDER}>',
     )
 
     return response

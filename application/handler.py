@@ -2,7 +2,6 @@ from application.core.http import HTTPHandler
 from application.core.scheduler import SchedulerHandler, SchedulerTasker
 from application.core.sql.defaults.sql_layer import SQLLayer
 from application.controllers import *
-from application.schedulers import *
 
 
 @HTTPHandler()
