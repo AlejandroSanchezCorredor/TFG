@@ -2,6 +2,7 @@ import json
 from application.core.http import HTTPRouter, get_request_query_parameter
 from application.models.flats_model import Flats
 from application.core.pynamodb.defaults import default_list, default_create, default_update, default_delete
+import os
 
 
 

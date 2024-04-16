@@ -22,3 +22,4 @@ class Chats(BaseModel):
                 'receiver': self.receiver,
                 'response': self.response,
             }
+ 

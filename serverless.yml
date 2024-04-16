@@ -23,6 +23,7 @@ provider:
   environment:
     AWS_STAGE: ${self:provider.stage}
     AWS_SERVICE: ${self:service}
+    CHATGPT_API_KEY: ${ssm:/chatgptKey}
     #COGNITO_USER_POOL_ID: !Ref CognitoUserPool
     #COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     #SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}

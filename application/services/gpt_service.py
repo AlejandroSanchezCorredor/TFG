@@ -16,7 +16,7 @@ def send_to_whatsapp(gpt_response,number): # Enviamos por whatsapp la respuesta 
     # Aqui irian
     # Las credenciales
 
-    client = Client("Credencial1", "Credencial2")
+    client = Client("Credencial1", "Credencial2") # METERLAS EN EL SSM
 
     message = client.messages.create(
     from_= from_whatsapp_number,
@@ -34,7 +34,7 @@ def get_gpt_response(message): # Solo cogemos las respuestas ya que introducirem
   
   json_str = json.dumps(message)
   
-  key = 'sk-'
+  key = os.getenv('CHATGPT_API_KEY', None)
 
   prompt = [{'role':'system', 'content':"""You are an assistant that responds to questions automatically. \
     Your task is to answer customers' questions about the flats. \
