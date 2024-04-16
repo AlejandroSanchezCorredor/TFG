@@ -18,9 +18,9 @@ custom:
 provider:
   name: aws
   runtime: python3.9
-  region: eu-west-1
+  region: eu-west-3
   stage: ${opt:stage, 'develop'}
-  profile: ${opt:aws-profile, 'Booking_cli'}
+  profile: ${opt:aws-profile, 'booking_cli'}
 
 package:
   patterns:

@@ -6,7 +6,7 @@ from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 class SQLLayer(object):
     def __call__(self, orig_func):
-
+        print("Entra a sql")
         def open_db_connection():
             BaseModel.set_session(db_get_session())
 

@@ -317,7 +317,7 @@ def get_daily_summary_email(user, new_trades_table, expiring_trades_table, langu
     """
 
     TEMPLATE = f'{DEFAULT_TEMPLATE_PATH}/trades_daily_summary.html'
-    SUBJECT = f'CHECKIT Daily Trades Summary {datetime.utcnow().strftime("%Y-%m-%d")}'
+    SUBJECT = f'TFG_BOOKING Daily Trades Summary {datetime.utcnow().strftime("%Y-%m-%d")}'
 
     new_trades_title = 'Last submitted Trades:' if new_trades_table else ''
     expiring_trades_title = 'Next expiring Trades:' if expiring_trades_table else ''

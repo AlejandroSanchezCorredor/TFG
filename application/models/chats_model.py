@@ -1,13 +1,24 @@
-from application.core.sql import db, BaseModel
+from pynamodb.attributes import UnicodeAttribute
+from application.core.pynamodb import BaseModel
+from pynamodb.attributes import UnicodeAttribute, UTCDateTimeAttribute
 
 
 class Chats(BaseModel):
-    __tablename__ = 'chat'
+    class Meta:
+        table_name = 'Chats'
+        region = 'eu-west-3'
+    
+    pk = UnicodeAttribute(hash_key=True)
+    sk = UnicodeAttribute(range_key=True) # La sk será la fecha de la conversacion/respuesta ChatGpt
+    sender  = UnicodeAttribute()
+    receiver = UnicodeAttribute()
+    response = UnicodeAttribute()
 
-    id = db.Column(db.String(100), nullable=False, primary_key=True, unique=True)
-    id_book = db.Column(db.String(100), db.ForeignKey('book.id'), nullable=False)
-    content = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    sender = db.Column(db.String(100), nullable=False)
-    receiver = db.Column(db.String(100), nullable=False)
-
+    def to_dict(self):
+            return {
+                'pk': self.pk,
+                'sk': self.sk,
+                'sender': self.sender,
+                'receiver': self.receiver,
+                'response': self.response,
+            }

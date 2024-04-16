@@ -9,7 +9,7 @@ class HTTPRouter:
     handlers = defaultdict(dict)
 
     @staticmethod
-    def route_request(event, context): # Buscamos si existe el recurso
+    def route_request(event, context): # Comprobamos si existe una función controller para el recurso solicitado, si no existe, error
         resource = re.sub(r'^/?(.*?)/?$', r'\1', event['resource'])
         if resource in HTTPRouter.handlers:
             http_method = event['httpMethod'].lower()
@@ -21,7 +21,7 @@ class HTTPRouter:
         raise HTTPError(404)
 
     @staticmethod
-    def route(resource, *http_verbs): 
+    def route(resource, *http_verbs):  # Asociamos una función controller (/controllers) con una ruta y uno o más métodos HTTP
         def inner(funct):
             @wraps(funct)
             def wrapper(*args, **kwargs):
@@ -32,3 +32,4 @@ class HTTPRouter:
             return wrapper
 
         return inner
+

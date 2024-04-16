@@ -1,7 +1,7 @@
 import json
 from application.core.http import HTTPRouter, get_request_query_parameter
-from application.core.sql.defaults import default_list, default_get, default_create, default_delete, default_update
 from application.models.books_model import Books
+from application.core.pynamodb.defaults import default_list, default_create, default_update, default_delete
 
 
 
@@ -10,6 +10,7 @@ from application.models.books_model import Books
 @HTTPRouter.route('api/books', 'GET')
 def get_books(event, context):
     _schema = {'exclude': ['created_on', 'updated_on']}
+    
     return default_list(model_class=Books, schema=_schema)
 
 @HTTPRouter.route('api/books', 'POST')
@@ -28,7 +29,8 @@ def patch_books(event, context):
 
 @HTTPRouter.route('api/books', 'DELETE')
 def delete_books(event, context):
-    id = get_request_query_parameter(param_key='id', request=event)
+    id = get_request_query_parameter(param_key='pk', request=event)
+    sort_key = get_request_query_parameter(param_key='sk', request=event)
 
-    return default_delete(model_class=Books, query_where={'id': id})
+    return default_delete(model_class=Books, hash_key=id, range_key= sort_key)
 

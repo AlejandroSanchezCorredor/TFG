@@ -1,3 +1,4 @@
+'''
 Resources:
   # ====================================================================================================================
   # [DEFINITION] COGNITO USER POOL
@@ -68,13 +69,15 @@ Resources:
 #     #   - COGNITO
       #  - Google
       # TODO: Remove localhost
-      CallbackURLs:
-        - http://localhost:4200/
-        - 'https://${self:custom.cloudFrontDomainName}'
+      #CallbackURLs:
+        #- http://localhost:4200/
+        #- 'https://${self:custom.cloudFrontDomainName}'
+'''
       # TODO: Remove localhost
-      LogoutURLs:
-        - http://localhost:4200/
-        - 'https://${self:custom.cloudFrontDomainName}'
+      #LogoutURLs:
+        #- http://localhost:4200/
+        #- 'https://${self:custom.cloudFrontDomainName}'
+'''
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthFlows:
         - implicit
@@ -96,14 +99,14 @@ Resources:
     Properties:
       IdentityPoolName: ${self:custom.cognitoIdentityPoolName}
       # Don't allow unauthenticated users
-      AllowUnauthenticatedIdentities: false
+ #     AllowUnauthenticatedIdentities: false
       # Link to our User Pool
-      CognitoIdentityProviders:
-        - ClientId:
-            Ref: CognitoUserPoolClient
-          ProviderName:
-            Fn::GetAtt: ["CognitoUserPool", "ProviderName"]
-
+  #    CognitoIdentityProviders:
+    #    - ClientId:
+  #          Ref: CognitoUserPoolClient
+  #        ProviderName:
+  #          Fn::GetAtt: ["CognitoUserPool", "ProviderName"]
+'''
   # ====================================================================================================================
   # [DEFINITION] COGNITO USER POOL IDENTITY > ROLE FOR AUTH
   # ====================================================================================================================
@@ -127,52 +130,59 @@ Resources:
       Path: /
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
+'''
         Statement:
           - Effect: 'Allow'
+'''
             Principal:
               Federated: 'cognito-identity.amazonaws.com'
+'''
             Action:
               - 'sts:AssumeRoleWithWebIdentity'
               - "sts:TagSession"
+'''
             Condition:
               StringEquals:
+'''
                 'cognito-identity.amazonaws.com:aud':
-                  Ref: CognitoIdentityPool
+
+#                  Ref: CognitoIdentityPool
               'ForAnyValue:StringLike':
                 'cognito-identity.amazonaws.com:amr': authenticated
+'''
       Policies:
         - PolicyName: 'CognitoAuthorizedPolicy'
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
+ #         PolicyDocument:
+  #          Version: '2012-10-17'
+  #          Statement:
               # Allow users to invoke our API
-              - Effect: 'Allow'
-                Action:
+  #            - Effect: 'Allow'
+   #             Action:
                   - 'mobiletargeting:UpdateEndpoint'
                   - 'mobiletargeting:PutEvents'
-                Resource: '*'
+  #              Resource: '*'
 
               # Allow users to use storage folder _update_ inside our S3 bucket (usage for temporal uploads)
-              - Effect: 'Allow'
-                Action:
+  #            - Effect: 'Allow'
+  #              Action:
                   - 's3:GetObject'
                   - 's3:PutObject'
                   - 's3:PutObjectTagging'
                   - 's3:DeleteObject'
-                Resource:
-                  - Fn::Join:
+  #              Resource:
+   #               - Fn::Join:
                       - ''
-                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+   #                   - - Fn::GetAtt: [ S3BucketStorage, Arn ]
                         - '/_uploads_/public/*'
-                  - Fn::Join:
+   #               - Fn::Join:
                       - ''
-                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+    #                  - - Fn::GetAtt: [ S3BucketStorage, Arn ]
                         - '/_uploads_/private/'
                         - '$'
                         - '{cognito-identity.amazonaws.com:sub}/*'
-                  - Fn::Join:
+    #              - Fn::Join:
                       - ''
-                      - - Fn::GetAtt: [ S3BucketStorage, Arn ]
+     #                 - - Fn::GetAtt: [ S3BucketStorage, Arn ]
                         - '/_uploads_/protected/'
                         - '$'
                         - '{cognito-identity.amazonaws.com:sub}/*'
@@ -183,6 +193,7 @@ Resources:
 # ======================================================================================================================
 # [OUTPUTS] INFORMATION > Log information
 # ======================================================================================================================
+'''
 Outputs:
   CognitoUserPool:
     Description: ARN Cognito user pool
@@ -195,3 +206,4 @@ Outputs:
   CognitoUserPoolClient:
     Description: ID Cognito user pool client
     Value: !Ref CognitoUserPoolClient
+'''

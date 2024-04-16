@@ -1,13 +1,27 @@
-from application.core.sql import db, BaseModel
-
+from pynamodb.attributes import UnicodeAttribute
+from application.core.pynamodb import BaseModel
+from pynamodb.attributes import UnicodeAttribute
 
 class Flats(BaseModel):
-    __tablename__ = 'flat'
+    class Meta:
+        table_name = 'Flats'
+        region = 'eu-west-3'
+    
+    pk = UnicodeAttribute(hash_key=True)
+    flat_name = UnicodeAttribute()
+    user_name = UnicodeAttribute()
+    description = UnicodeAttribute()
+    score = UnicodeAttribute()
+    price = UnicodeAttribute()
+    location = UnicodeAttribute()
 
-    id = db.Column(db.String(100), nullable=False, primary_key=True, unique=True)
-    id_user = db.Column(db.String(100), db.ForeignKey('user.id'), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
-    score = db.Column(db.Float, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    location = db.Column(db.String(100), nullable=False)
+    def to_dict(self):
+            return {
+                'pk': self.pk,
+                'flat_name': self.flat_name,
+                'user_name': self.user_name,
+                'description': self.description,
+                'score': self.score,
+                'price': self.price,
+                'location': self.location,
+            }

@@ -1,52 +1,59 @@
-service: TFG_Booking-application
+service: TFG-Booking-application
 
 plugins:
   - serverless-offline
   - serverless-offline-scheduler
   - serverless-export-env
-
+  - serverless-python-requirements
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.11
   endpointType: REGIONAL
   memorySize: 512
   timeout: 15
-  region: eu-west-1
+  region: eu-west-3
   deploymentMethod: direct
   stage: ${opt:stage, 'develop'}
-  profile: ${opt:aws-profile, 'Booking_cli'}
+  profile: ${opt:aws-profile, 'booking_cli'}
+
+  apiGateway:
+    apiKeys:
+      - MiApiKey
+ 
   environment:
     AWS_STAGE: ${self:provider.stage}
     AWS_SERVICE: ${self:service}
-    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
-    COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
-    SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
+    #COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+    #COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
+    #SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
 
   iam:
     role:
       statements:
         # COGNITO Permissions
-        - Effect: Allow
-          Action:
-            - cognito-idp:AdminGetUser
-            - cognito-idp:AdminCreateUser
-            - cognito-idp:AdminUpdateUserAttributes
-            - cognito-idp:AdminDisableUser
-            - cognito-idp:AdminEnableUser
-            - cognito-idp:AdminDeleteUser
-            - cognito-idp:AdminDeleteUserAttributes
-            - cognito-idp:AdminLinkProviderForUser
-            - cognito-idp:AdminUserGlobalSignOut
-            - cognito-idp:AdminListGroupsForUser
-            - cognito-idp:AdminRemoveUserFromGroup
-            - cognito-idp:AdminAddUserToGroup
-            - cognito-idp:ListGroups
-          Resource: !GetAtt CognitoUserPool.Arn
+
+        #- Effect: Allow
+          #Action:
+            #- cognito-idp:AdminGetUser
+            #- cognito-idp:AdminCreateUser
+            #- cognito-idp:AdminUpdateUserAttributes
+            #- cognito-idp:AdminDisableUser
+            #- cognito-idp:AdminEnableUser
+            #- cognito-idp:AdminDeleteUser
+            #- cognito-idp:AdminDeleteUserAttributes
+            #- cognito-idp:AdminLinkProviderForUser
+            #- cognito-idp:AdminUserGlobalSignOut
+            #- cognito-idp:AdminListGroupsForUser
+            #- cognito-idp:AdminRemoveUserFromGroup
+            #- cognito-idp:AdminAddUserToGroup
+            #- cognito-idp:ListGroups
+          #Resource: !GetAtt CognitoUserPool.Arn
         # SES Permissions
-        - Effect: Allow
-          Action:
-            - ses:SendEmail
-          Resource: '*'
+       # - Effect: Allow
+        #  Action:
+        #    - ses:SendEmail
+        #  Resource: '*'
+
         # LAMBDA Permissions
         - Effect: Allow
           Action:
@@ -59,18 +66,26 @@ provider:
             - ssm:GetParameter
           Resource:
             - "*"
+        # DYNAMODB Permissions
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource:
+            - '*'
+
 
 custom:
   appEnvironment: ${file(serverless_resources/environment.yml):environment.${self:provider.stage}}
   # APP SECURITY
   appSecurity: ${self:custom.appEnvironment.appSecurity}
   # COGNITO POOLS
-  cognitoUserPoolName: ${self:service}-user-pool
-  cognitoIdentityPoolName: ${self:service}_indentity_pool
-  cognitoUserPoolClientName: ${self:custom.cognitoUserPoolName}-client
+  #cognitoUserPoolName: ${self:service}-user-pool
+  #cognitoIdentityPoolName: ${self:service}_indentity_pool
+  #cognitoUserPoolClientName: ${self:custom.cognitoUserPoolName}-client
   # SES
-  sesEmailSenderAddress: checkit@grupovermon.com
-  sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
+  #sesEmailSenderAddress: checkit@grupovermon.com
+  #sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
+
 
 package:
   individually: true
@@ -80,142 +95,151 @@ package:
     - 'application/**'
 
 functions:
+  prueba:
+    handler: application/handler.pruebas
+    name: pruebas
+    events:
+      - http: 
+          path: api/pruebas
+          method: get
+          cors: true
+
   api:
     handler: application/handler.api
     name: ${self:service}-handler-api
     memorySize: 512
-    layers:
-      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    #layers:
+      #- ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
     events:
       - http:
-          path: api/users
-          method: post
-          cors: true
-      - http:
-          path: api/users
-          method: get
-          cors: true
-      - http:
-          path: api/user
-          method: get
-          cors: true
-      - http:
           path: api/books
           method: get
           cors: true
+          private: true
       - http:
           path: api/books
           method: post
           cors: true
+          private: true
       - http:
           path: api/books
           method: patch
           cors: true
+          private: true
       - http:
           path: api/books
           method: delete
           cors: true
+          private: true
       - http:
           path: api/chats
           method: get
           cors: true
+          private: true
       - http:
           path: api/chats
           method: post
           cors: true
+          private: true
       - http:
           path: api/chats
           method: patch
           cors: true
+          private: true
       - http:
           path: api/chats
           method: delete
           cors: true
+          private: true
       - http:
           path: api/flats
           method: get
           cors: true
-
+          private: true
       - http:
           path: api/flats
           method: post
           cors: true
-
+          private: true
       - http:
           path: api/flats
           method: patch
           cors: true
-
+          private: true
       - http:
           path: api/flats
           method: delete
           cors: true
+          private: true
    
   # TRIGGERS ===========================================================================================================
-  
-  CognitoPreVerificationTrigger:
-    handler: application/functions/triggers/cognito_triggers.pre_verification_trigger
-    name: ${self:service}-cognito-pre-verification-trigger
-    maximumRetryAttempts: 1
-    dependsOn:
-      - CognitoUserPool
-    events:
-      - cognitoUserPool:
-          pool: ${self:custom.cognitoUserPoolName}
-          trigger: CustomMessage
-          existing: true
-          forceDeploy: true
-    package:
-      individually: true
-      patterns:
-        - '!application/**'
-        - 'application/configuration.py'
-        - 'application/core/configuration_loader.py'
-        - 'application/core/aws/ssm.py'
-        - 'application/core/mail/mail_handler.py'
-        - 'application/core/mail/templates/snipets/*.*'
-        - 'application/core/mail/templates/cognito_*.*'
-        - 'application/functions/triggers/cognito_triggers.py'
 
-  CognitoPreSignUpTrigger:
-    handler: application/functions/triggers/cognito_triggers.pre_sign_up_trigger
-    name: ${self:service}-cognito-pre-sign-up-trigger
-    maximumRetryAttempts: 1
-    dependsOn:
-      - CognitoUserPool
-    events:
-      - cognitoUserPool:
-          pool: ${self:custom.cognitoUserPoolName}
-          trigger: PreSignUp
-          existing: true
-          forceDeploy: true
-    package:
-      individually: true
-      patterns:
-        - '!application/**'
-        - 'application/configuration.py'
-        - 'application/core/configuration_loader.py'
-        - 'application/core/aws/ssm.py'
-        - 'application/core/aws/cognito.py'
-        - 'application/functions/triggers/cognito_triggers.py'
+  #CognitoPreVerificationTrigger:
+    #handler: application/functions/triggers/cognito_triggers.pre_verification_trigger
+    #name: ${self:service}-cognito-pre-verification-trigger
+    #maximumRetryAttempts: 1
+    #dependsOn:
+      #- CognitoUserPool
+    #events:
+      #- cognitoUserPool:
+          #pool: ${self:custom.cognitoUserPoolName}
+          #trigger: CustomMessage
+          #existing: true
+          #forceDeploy: true
+    #package:
+      #individually: true
+      #patterns:
+        #- '!application/**'
+        #- 'application/configuration.py'
+        #- 'application/core/configuration_loader.py'
+        #- 'application/core/aws/ssm.py'
+        #- 'application/core/mail/mail_handler.py'
+        #- 'application/core/mail/templates/snipets/*.*'
+        #- 'application/core/mail/templates/cognito_*.*'
+        #- 'application/functions/triggers/cognito_triggers.py'
 
-  CognitoPreTokenGenerationTrigger:
-    handler: application/functions/triggers/cognito_triggers.pre_token_generation_trigger
-    name: ${self:service}-cognito-pre-token-generation-trigger
-    layers:
-      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
-    maximumRetryAttempts: 1
-    dependsOn:
-      - CognitoUserPool
-    events:
-      - cognitoUserPool:
-          pool: ${self:custom.cognitoUserPoolName}
-          trigger: PreTokenGeneration
-          existing: true
-          forceDeploy: true
+  #CognitoPreSignUpTrigger:
+    #handler: application/functions/triggers/cognito_triggers.pre_sign_up_trigger
+    #name: ${self:service}-cognito-pre-sign-up-trigger
+    #maximumRetryAttempts: 1
+    #dependsOn:
+      #- CognitoUserPool
+    #events:
+      #- cognitoUserPool:
+          #pool: ${self:custom.cognitoUserPoolName}
+          #trigger: PreSignUp
+          #existing: true
+          #forceDeploy: true
+    #package:
+      #individually: true
+      #patterns:
+        #- '!application/**'
+        #- 'application/configuration.py'
+        #- 'application/core/configuration_loader.py'
+        #- 'application/core/aws/ssm.py'
+        #- 'application/core/aws/cognito.py'
+        #- 'application/functions/triggers/cognito_triggers.py'
+
+  #CognitoPreTokenGenerationTrigger:
+    #handler: application/functions/triggers/cognito_triggers.pre_token_generation_trigger
+    #name: ${self:service}-cognito-pre-token-generation-trigger
+    #layers:
+      #- ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    #maximumRetryAttempts: 1
+    #dependsOn:
+      #- CognitoUserPool
+   # events:
+      #- cognitoUserPool:
+        #  pool: ${self:custom.cognitoUserPoolName}
+        # trigger: PreTokenGeneration
+        #  existing: true
+         # forceDeploy: true
 
 resources:
+  # Dynamodb
+  - ${file(serverless_resources/dynamodb.yml)}
   # API Gateway
-  - ${file(serverless_resources/aws_api_gateway.yml)}
+  #- ${file(serverless_resources/aws_api_gateway.yml)}
   # Cognito Authentication
-  - ${file(serverless_resources/aws_cognito.yml)}
+ # - ${file(serverless_resources/aws_cognito.yml)}
+
