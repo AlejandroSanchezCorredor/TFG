@@ -1,4 +1,4 @@
-service: TFG_Booking-application-requirements
+service: TFG-Booking-application-requirements
 
 plugins:
   - serverless-python-requirements
@@ -9,15 +9,15 @@ custom:
       name: ${self:provider.stage}-requirements-layer
       description: Python requirements lambda layer
       compatibleRuntimes:
-        - python3.9
+        - python3.11
     dockerizePip: true
-    dockerImage: public.ecr.aws/sam/build-python3.9:latest
+    dockerImage: public.ecr.aws/sam/build-python3.11:latest
     fileName: requirements.txt
     slim: true
 
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.11
   region: eu-west-3
   stage: ${opt:stage, 'develop'}
   profile: ${opt:aws-profile, 'booking_cli'}

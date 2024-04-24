@@ -10,7 +10,7 @@ from uuid import UUID
 from .http_error import HTTPError
 
 try:
-    from sqlalchemy.ext.declarative import DeclarativeMeta
+    #from sqlalchemy.ext.declarative import DeclarativeMeta
     HAS_SQL_ALCHEMY = True
 except ImportError:
     HAS_SQL_ALCHEMY = False
@@ -60,10 +60,10 @@ def get_json_encoder(schema=None):
             return bool(x)
         elif HAS_NUMPY and isinstance(x, np.ndarray):
             return x.tolist()
-        elif HAS_SQL_ALCHEMY and isinstance(x.__class__, DeclarativeMeta):
-            if schema is not None:
-                return x.from_schema(schema)
-            return x.to_dict()
+        #elif HAS_SQL_ALCHEMY and isinstance(x.__class__, DeclarativeMeta):
+            #if schema is not None:
+                #return x.from_schema(schema)
+            #return x.to_dict()
         return x
     return extended_encoder
 

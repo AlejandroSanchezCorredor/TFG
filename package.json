@@ -15,6 +15,7 @@
     "serverless-export-env": "^2.1.0",
     "serverless-offline": "^12.0.4",
     "serverless-offline-scheduler": "^0.5.0",
-    "serverless-python-requirements": "^6.1.0"
+    "serverless-python-requirements": "^6.1.0",
+    "webpack-cli": "^5.1.4"
   }
 }

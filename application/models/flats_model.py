@@ -9,7 +9,6 @@ class Flats(BaseModel):
     
     pk = UnicodeAttribute(hash_key=True)
     flat_name = UnicodeAttribute()
-    user_name = UnicodeAttribute()
     description = UnicodeAttribute()
     score = UnicodeAttribute()
     price = UnicodeAttribute()
@@ -19,7 +18,6 @@ class Flats(BaseModel):
             return {
                 'pk': self.pk,
                 'flat_name': self.flat_name,
-                'user_name': self.user_name,
                 'description': self.description,
                 'score': self.score,
                 'price': self.price,

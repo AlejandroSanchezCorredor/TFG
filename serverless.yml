@@ -16,6 +16,16 @@ provider:
   stage: ${opt:stage, 'develop'}
   profile: ${opt:aws-profile, 'booking_cli'}
 
+  ecr:
+    images:
+      schedulercontainer:
+        path: .
+        file: Dockerfile
+      #testcontainer:
+        #path: .
+        #file: Dockerfile.test
+      
+
   apiGateway:
     apiKeys:
       - MiApiKey
@@ -26,7 +36,9 @@ provider:
     CHATGPT_API_KEY: ${ssm:/chatgptKey}
     #COGNITO_USER_POOL_ID: !Ref CognitoUserPool
     #COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
-    #SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
+    SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
+    BOOKING_EXTRANER_USER: ${self:custom.booking_extranet_user}
+    BOOKING_EXTRANER_PASSWORD: ${ssm:/booking_extranet_password}
 
   iam:
     role:
@@ -50,10 +62,10 @@ provider:
             #- cognito-idp:ListGroups
           #Resource: !GetAtt CognitoUserPool.Arn
         # SES Permissions
-       # - Effect: Allow
-        #  Action:
-        #    - ses:SendEmail
-        #  Resource: '*'
+        - Effect: Allow
+          Action:
+            - ses:SendEmail
+          Resource: '*'
 
         # LAMBDA Permissions
         - Effect: Allow
@@ -79,13 +91,18 @@ custom:
   appEnvironment: ${file(serverless_resources/environment.yml):environment.${self:provider.stage}}
   # APP SECURITY
   appSecurity: ${self:custom.appEnvironment.appSecurity}
+
   # COGNITO POOLS
   #cognitoUserPoolName: ${self:service}-user-pool
   #cognitoIdentityPoolName: ${self:service}_indentity_pool
   #cognitoUserPoolClientName: ${self:custom.cognitoUserPoolName}-client
+
   # SES
-  #sesEmailSenderAddress: checkit@grupovermon.com
-  #sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
+  sesEmailSenderAddress: alech.maria@hotmail.com
+  sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
+
+  # BOOKING EXTRANET
+  booking_extranet_user: frcantos@gmail.com
 
 
 package:
@@ -96,21 +113,48 @@ package:
     - 'application/**'
 
 functions:
-  prueba:
-    handler: application/handler.pruebas
-    name: pruebas
+  #pruebacontainer:
+    #image:
+      #name: testcontainer
+    #name: pruebaContainer
+
+  scheduler:
+    image:
+      name: schedulercontainer
+    name: ${self:service}-handler-scheduler
     events:
-      - http: 
-          path: api/pruebas
-          method: get
-          cors: true
+      - schedule:
+          rate: rate(2 minutes)
+          input:
+            task: get_flats
+      - schedule:
+          rate: rate(2 minutes)
+          input:
+            task: get_books
+      - schedule:
+          rate: rate(2 minutes)
+          input:
+            task: get_chats
+         
+  #schedulerScrapTest:
+    #handler: application/functions/scraping/get_flats.miprueba
+    #name: ${self:service}-handler-schedulerScrapTest
+    #memorySize: 512
+    #layers:
+      #- ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    #events:
+      #- schedule:
+          #rate: rate(2 minutes)
+          #input:
+            #task: get_flats
+  
 
   api:
     handler: application/handler.api
     name: ${self:service}-handler-api
     memorySize: 512
-    #layers:
-      #- ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
+    layers:
+      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
     events:
       - http:
           path: api/books

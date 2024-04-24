@@ -18,7 +18,6 @@ class SchedulerTasker:
             @wraps(funct)
             def wrapper(*args, **kwargs):
                 return funct(*args, **kwargs)
-
             SchedulerTasker.handlers[resource] = funct
             return wrapper
 
