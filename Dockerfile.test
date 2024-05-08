@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.11
+FROM umihico/aws-lambda-selenium-python:latest
 
 COPY requirements.txt ./
 
@@ -6,4 +6,4 @@ COPY application ./application
 
 RUN pip install -r requirements.txt
 
-CMD ["application.handler.scheduler"]
+CMD ["application.functions.scraping.pruebas.miprueba"]

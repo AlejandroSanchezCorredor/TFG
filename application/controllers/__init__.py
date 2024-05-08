@@ -1,3 +1,3 @@
-from .books_controller import *
+from .reservations_controller import *
 from .chats_controller import *
-from .flats_controller import *
+from .properties_controller import *

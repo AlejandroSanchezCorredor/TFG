@@ -2,24 +2,22 @@ from pynamodb.attributes import UnicodeAttribute
 from application.core.pynamodb import BaseModel
 from pynamodb.attributes import UnicodeAttribute
 
-class Flats(BaseModel):
+class Properties(BaseModel):
     class Meta:
-        table_name = 'Flats'
+        table_name = 'Properties'
         region = 'eu-west-3'
     
     pk = UnicodeAttribute(hash_key=True)
-    flat_name = UnicodeAttribute()
+    property_name = UnicodeAttribute()
     description = UnicodeAttribute()
-    score = UnicodeAttribute()
-    price = UnicodeAttribute()
+    scores = UnicodeAttribute() # No es un diccionario porque lo transformamos antes a una cadena JSON
     location = UnicodeAttribute()
 
     def to_dict(self):
             return {
                 'pk': self.pk,
-                'flat_name': self.flat_name,
+                'property_name': self.property_name,
                 'description': self.description,
-                'score': self.score,
-                'price': self.price,
+                'scores': self.scores,
                 'location': self.location,
             }

@@ -5,6 +5,7 @@ plugins:
   - serverless-offline-scheduler
   - serverless-export-env
   - serverless-python-requirements
+
 provider:
   name: aws
   runtime: python3.11
@@ -18,12 +19,15 @@ provider:
 
   ecr:
     images:
-      schedulercontainer:
-        path: .
-        file: Dockerfile
-      #testcontainer:
+      #schedulercontainer:
         #path: .
-        #file: Dockerfile.test
+        #file: Dockerfile.scheduler
+      apicontainer:
+        path: .
+        file: Dockerfile.api
+      testcontainer:
+        path: .
+        file: Dockerfile.test
       
 
   apiGateway:
@@ -85,6 +89,12 @@ provider:
             - dynamodb:*
           Resource:
             - '*'
+        # S3 Permissions
+        - Effect: Allow
+          Action:
+            - s3:*
+          Resource:
+            - '*'
 
 
 custom:
@@ -113,31 +123,33 @@ package:
     - 'application/**'
 
 functions:
-  #pruebacontainer:
-    #image:
-      #name: testcontainer
-    #name: pruebaContainer
-
-  scheduler:
+  pruebacontainer:
     image:
-      name: schedulercontainer
-    name: ${self:service}-handler-scheduler
-    events:
-      - schedule:
-          rate: rate(2 minutes)
-          input:
-            task: get_flats
-      - schedule:
-          rate: rate(2 minutes)
-          input:
-            task: get_books
-      - schedule:
-          rate: rate(2 minutes)
-          input:
-            task: get_chats
+      name: testcontainer
+    name: pruebaContainer
+    timeout: 180 
+    memorySize: 1024 
+
+  #scheduler:
+    #image:
+      #name: schedulercontainer
+    #name: ${self:service}-handler-scheduler
+    #events:
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_properties
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_reservations
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_chats
          
   #schedulerScrapTest:
-    #handler: application/functions/scraping/get_flats.miprueba
+    #handler: application/functions/scraping/get_properties.miprueba
     #name: ${self:service}-handler-schedulerScrapTest
     #memorySize: 512
     #layers:
@@ -146,33 +158,32 @@ functions:
       #- schedule:
           #rate: rate(2 minutes)
           #input:
-            #task: get_flats
+            #task: get_properties
   
 
   api:
-    handler: application/handler.api
+    image:
+      name: apicontainer
     name: ${self:service}-handler-api
     memorySize: 512
-    layers:
-      - ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
     events:
       - http:
-          path: api/books
+          path: api/reservations
           method: get
           cors: true
           private: true
       - http:
-          path: api/books
+          path: api/reservations
           method: post
           cors: true
           private: true
       - http:
-          path: api/books
+          path: api/reservations
           method: patch
           cors: true
           private: true
       - http:
-          path: api/books
+          path: api/reservations
           method: delete
           cors: true
           private: true
@@ -197,22 +208,22 @@ functions:
           cors: true
           private: true
       - http:
-          path: api/flats
+          path: api/properties
           method: get
           cors: true
           private: true
       - http:
-          path: api/flats
+          path: api/properties
           method: post
           cors: true
           private: true
       - http:
-          path: api/flats
+          path: api/properties
           method: patch
           cors: true
           private: true
       - http:
-          path: api/flats
+          path: api/properties
           method: delete
           cors: true
           private: true

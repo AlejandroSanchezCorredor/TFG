@@ -1,3 +1,3 @@
-from . import books_model
+from . import reservations_model
 from . import chats_model
-from . import flats_model
+from . import properties_model
