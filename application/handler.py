@@ -1,9 +1,9 @@
 from application.core.http import HTTPHandler
 from application.core.scheduler import SchedulerHandler, SchedulerTasker
 from application.controllers import *
-from application.functions.scraping.get_reservations import *
-from application.functions.scraping.get_properties import *
-from application.functions.scraping.get_chats import *
+from application.functions.simulated_data.get_reservations import *
+from application.functions.simulated_data.get_properties import *
+from application.functions.simulated_data.get_chats import *
 
 
 @HTTPHandler()

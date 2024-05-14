@@ -19,15 +19,15 @@ provider:
 
   ecr:
     images:
-      #schedulercontainer:
-        #path: .
-        #file: Dockerfile.scheduler
+      schedulercontainer:
+        path: .
+        file: Dockerfile.scheduler
       apicontainer:
         path: .
         file: Dockerfile.api
-      testcontainer:
-        path: .
-        file: Dockerfile.test
+      #testcontainer:
+        #path: .
+        #file: Dockerfile.test
       
 
   apiGateway:
@@ -123,30 +123,30 @@ package:
     - 'application/**'
 
 functions:
-  pruebacontainer:
-    image:
-      name: testcontainer
-    name: pruebaContainer
-    timeout: 180 
-    memorySize: 1024 
-
-  #scheduler:
+  #pruebacontainer:
     #image:
-      #name: schedulercontainer
-    #name: ${self:service}-handler-scheduler
-    #events:
+      #name: testcontainer
+    #name: pruebaContainer
+    #timeout: 180 
+    #memorySize: 1024 
+
+  scheduler:
+    image:
+      name: schedulercontainer
+    name: ${self:service}-handler-scheduler
+    events:
       #- schedule:
           #rate: rate(60 minutes)
           #input:
             #task: get_properties
       #- schedule:
-          #rate: rate(60 minutes)
+          #rate: rate(2 minutes)
           #input:
             #task: get_reservations
-      #- schedule:
-          #rate: rate(60 minutes)
-          #input:
-            #task: get_chats
+      - schedule:
+          rate: rate(60 minutes)
+          input:
+            task: get_chats
          
   #schedulerScrapTest:
     #handler: application/functions/scraping/get_properties.miprueba

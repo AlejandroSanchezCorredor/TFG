@@ -67,7 +67,6 @@ def ini_driver():
     options.add_argument("--headless=new")
     options.add_argument('--no-sandbox')
     options.add_argument("--disable-gpu")
-    #options.add_argument("--window-size=1280x1696")
     options.add_argument("--single-process")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-dev-tools")
@@ -75,7 +74,14 @@ def ini_driver():
     options.add_argument(f"--user-data-dir={mkdtemp()}")
     options.add_argument(f"--data-path={mkdtemp()}")
     options.add_argument(f"--disk-cache-dir={mkdtemp()}")
-    #options.add_argument("--remote-debugging-port=9222")
+
+    # New options
+    options.add_argument("--disable-extensions")  # Disabling extensions
+    options.add_argument("--disable-web-security")  # Disable web security
+    options.add_argument("--no-proxy-server")  # Disable proxy server
+    options.add_argument("--enable-precise-memory-info")  # Enable precise memory info
+    options.add_argument("--ignore-certificate-errors")  # Ignore certificate errors
+    options.add_argument("--disable-popup-blocking")  # Disable popup blocking
 
     chrome = webdriver.Chrome(options=options, service=service)
 

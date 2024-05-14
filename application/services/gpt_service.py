@@ -46,10 +46,15 @@ def get_gpt_response(message): # Solo cogemos las respuestas ya que introducirem
       Paso 2: Identifica al cliente, que tendrá dentro de "mensajes", dentro de "response" y dentro de "author", el campo "guest". \
       Paso 3: Verifica si la última pregunta del cliente está dentro del contexto de la reserva o los pisos. \
       Paso 4: Si la pregunta está relacionada con el contexto, responde a la pregunta. En caso contrario, responde "No definido". \
+      Paso 5: Responde únicamente a las  últimas preguntas del cliente \
       La respuesta debe ser breve y en lenguaje humano. \
+      Tómate tu tiempo para responder como lo haría el propietario de la propiedad. \
+      Responde de manera humanizada. \
       Aquí está todo el contexto de la situación: \
       {context}"""
           }]
+    # Con el Paso 5: Paso 5: Responde a todas las preguntas del cliente que no haya respondido el "partner" \ 
+    # Responde a todas las preguntas que haya hecho el cliente, no solo a la última
 
   client = OpenAI(api_key=key)
 
