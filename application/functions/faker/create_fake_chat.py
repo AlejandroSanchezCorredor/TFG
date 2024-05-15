@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from application.models.chats_model import Chats
 from application.core.aws.ses import send_email
 from application.services.gpt_service import get_gpt_response
+from application.core.configuration_loader import get_configuration
 
 MIN_N_MESSAGES = 2
 MAX_N_MESSAGES = 4
@@ -32,11 +33,11 @@ guest_questions = [
 
 ]
 
-def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva_id, dict_property, dict_reservation):
+def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva_id, dict_property, dict_reservation, configuration):
     id_conversation = fake.uuid4()
     conversation_pk = f"{user_name}#{propiedad_id}#{reserva_id}#{id_conversation}"
     messages = []
-    total_n_messages = random.randint(MIN_N_MESSAGES, MAX_N_MESSAGES)  # Selecciona de 1 a 3 mensajes para la conversación
+    total_n_messages = random.randint(MIN_N_MESSAGES, MAX_N_MESSAGES)  # Selecciona de 2 a 4 mensajes para la conversación
     n_messages = min(total_n_messages, len(partner_text), len(guest_questions))  # No se deben solicitar más mensajes de los disponibles
     unique_partner_text = random.sample(partner_text, n_messages) # Selecciona mensajes únicos para simular conversaciones "reales"
     unique_guest_questions = random.sample(guest_questions, n_messages)
@@ -58,8 +59,8 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
     print(messages)
 
     gpt_answer= get_gpt_response(context)
-    msg = "Chat GPT ha respondido\n" + gpt_answer + "a la conversación : " + conversation_pk
-    send_email(msg, recipient="alech.maria@hotmail.com", subject="Guardando conversación")
+    msg = "Chat GPT ha respondido\n" + gpt_answer + " a la conversación : " + conversation_pk
+    send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando conversación")
 
     messages.append({"author": "partner", "content": gpt_answer})
 
@@ -76,6 +77,6 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
         conversacion.save()
     except Exception as e:
         msg = "Error al guardar la conversación en la base de datos."
-        send_email(msg, recipient="alech.maria@hotmail.com", subject="Guardando conversación")
+        send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando conversación")
     
     return conversacion_dict

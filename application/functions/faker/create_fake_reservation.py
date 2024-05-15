@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timedelta
 from application.models.reservations_model import Reservations
 from application.core.aws.ses import send_email
+from application.core.configuration_loader import get_configuration
 
 MIN_DAYS_CHECKIN = 3
 MAX_DAYS_CHECKIN = 4
@@ -15,6 +16,7 @@ MIN_PRICE = 50
 MAX_PRICE = 500
 
 def create_fake_reservation(fake, user_name, propiedad_id):
+    configuration = get_configuration()
     reservation_id = fake.uuid4()
     client_name = fake.name()
 
@@ -38,6 +40,6 @@ def create_fake_reservation(fake, user_name, propiedad_id):
         reservation.save()
     except Exception as e:
         msg = "Error al guardar la reserva en la base de datos."
-        send_email(msg, recipient="alech.maria@hotmail.com", subject="Guardando reserva")
+        send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando reserva")
     
     return reservation_dict

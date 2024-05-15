@@ -6,4 +6,4 @@ COPY application ./application
 
 RUN pip install -r requirements.txt
 
-CMD ["application.functions.scraping.pruebas.miprueba"]
+CMD ["application.functions.simulated_data.pruebas.miprueba"]

@@ -112,7 +112,7 @@ custom:
   sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
 
   # BOOKING EXTRANET
-  booking_extranet_user: frcantos@gmail.com
+  booking_extranet_user: Alejandro_Sanchez
 
 
 package:
@@ -140,13 +140,26 @@ functions:
           #input:
             #task: get_properties
       #- schedule:
-          #rate: rate(2 minutes)
+          #rate: rate(60 minutes)
           #input:
             #task: get_reservations
-      - schedule:
-          rate: rate(60 minutes)
-          input:
-            task: get_chats
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_chats
+
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_properties_scraped
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_reservations_scraped
+      #- schedule:
+          #rate: rate(60 minutes)
+          #input:
+            #task: get_chats_scraped
          
   #schedulerScrapTest:
     #handler: application/functions/scraping/get_properties.miprueba

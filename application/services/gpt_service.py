@@ -1,84 +1,66 @@
 import os
 from openai import OpenAI
-from twilio.rest import Client
 import json
 from application.core.aws.ses import send_email
+from application.services.twilio_service import send_to_whatsapp
 
 
-# La información que le pasaremos sobre los pisos será: Nombre, comentarios, puntuaciones, direccion, estado, precio (en la página pone precios pagados por persona y noche
-# pero no un precio exacto)
+def get_gpt_response(message): 
+    context = json.dumps(message)
+    key = os.getenv('CHATGPT_API_KEY', None)
+    # Con los datos simulados detecta que las preguntas del cliente no tienen respuesta y responde a todas
+    prompt = [{
+        'role': 'system',
+        'content': f"""Eres un asistente cuyo deber es responder preguntas automáticamente de manera breve y precisa que tengan que ver un propiedades y reservas. \
+        Tu tarea es responder preguntas que realicen los clientes sobre propiedades y reservas de manera breve. \
+        Sigue estos pasos: \
+        Paso 1: Identifica la conversación en el JSON, está en la clave "mensajes". \
+        Paso 2: Identifica al cliente, que tendrá dentro de "mensajes", dentro de "response" y dentro de "author", el campo "guest". \
+        Paso 3: Verifica si las preguntas del cliente tienen respuesta. \
+        Paso 4: Responde únicamente a las preguntas que no tengan respuesta. \
+        Paso 5: Si la pregunta está relacionada con la propiedad o la reservas, responde a la pregunta. En caso contrario, responde "No definido". \
+        Paso 7: Si tienes más de una pregunta sin responder, solo muestra las respuestas separadas por un punto y coma. \
+        La respuesta debe ser breve y en lenguaje humano. \
+        Tómate tu tiempo para responder como lo haría el propietario de la propiedad. \
+        Responde de manera humanizada. \
+        Aquí está todo el contexto de la situación: \
+        {context}"""
+            }]
 
-# La información que le pasaremos sobre la conversación será: emisor, recepto, fecha y contenido (Al final no.)
+    client = OpenAI(api_key=key)
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=prompt,
+        temperature=0,
+    )
 
-def send_to_whatsapp(gpt_response,number): # Enviamos por whatsapp la respuesta generada por ChatGPT
-  from_whatsapp_number='whatsapp:+14155238886'
-  # from_sms_number='+15677043718'
+    content = response.choices[0].message.content
 
-  # Aqui irian
-  # Las credenciales
+    # Formatear la respuesta para que se parezca lo máximo posible a una respuesta humana
 
-  client = Client("Credencial1", "Credencial2") # METERLAS EN EL SSM
+    index = content.find("sin responder")
+    # Si la frase fue encontrada, cogemos todo después del segundo ":", que será el contenido que nos interesa
+    if index != -1:
+        # Encuentra el segundo ":" después de "sin responder"
+        second_colon = content.find(":", index + len("sin responder"))
 
-  message = client.messages.create(
-  from_= from_whatsapp_number,
-  body=gpt_response,
-  to= number # Cogeríamos el número de teléfono del usuario dentro de un campo de la tabla reservas
-  )
+        # Si se encontró un segundo ":", toma todo después de eso
+        if second_colon != -1:
+            content = content[second_colon+1:].strip()
+        else:
+            content = content
+    else:
+        content = content
 
+    #number = '+34601364570' # Obtendríamos el número del cliente de la tabla donde almacenamos las reservas
+    #send_to_whatsapp(content,number)
 
-def get_gpt_response(message): # Solo cogemos las respuestas ya que introduciremos en booking las respuestas scrapeando
-  # "Message" contendría todo, tanto la información de los pisos como la de la conversacion, por ejemplo en formato ¿JSON?
+    #if "no definido" in content or "no especific" in content or "no se especifi" in content: # COGER MÁS IF DEL METODO GET_GTP_RESPONSE_1
+        #content = 'No definido'
+        #msg = "Pregunta sin contexto recibida"
+        #send_email(msg, recipient="alech.maria@hotmail.com", subject="Resultado de la prueba")
 
-  # En este método le pasaríamos toda la informacon definida anteriormente y el método se encargaría de llamar a la API de OpenAI
-
-  # Nos devolverá la respuesta generada
-
-  context = json.dumps(message)
-
-  key = os.getenv('CHATGPT_API_KEY', None)
-
-  prompt = [{
-      'role': 'system',
-      'content': f"""Eres un asistente cuyo deber es responder preguntas automáticamente. \
-      Tu tarea es responder preguntas que realicen los clientes. \
-      Sigue estos pasos: \
-      Paso 1: Identifica la conversación en el JSON, está en la clave "mensajes". \
-      Paso 2: Identifica al cliente, que tendrá dentro de "mensajes", dentro de "response" y dentro de "author", el campo "guest". \
-      Paso 3: Verifica si la última pregunta del cliente está dentro del contexto de la reserva o los pisos. \
-      Paso 4: Si la pregunta está relacionada con el contexto, responde a la pregunta. En caso contrario, responde "No definido". \
-      Paso 5: Responde únicamente a las  últimas preguntas del cliente \
-      La respuesta debe ser breve y en lenguaje humano. \
-      Tómate tu tiempo para responder como lo haría el propietario de la propiedad. \
-      Responde de manera humanizada. \
-      Aquí está todo el contexto de la situación: \
-      {context}"""
-          }]
-    # Con el Paso 5: Paso 5: Responde a todas las preguntas del cliente que no haya respondido el "partner" \ 
-    # Responde a todas las preguntas que haya hecho el cliente, no solo a la última
-
-  client = OpenAI(api_key=key)
-
-  response = client.chat.completions.create(
-      model="gpt-4",
-      messages=prompt,
-      temperature=0,
-  )
-
-  # Extract the content from the response
-  content = response.choices[0].message.content
-
-  # Obtener el número del destinatario de la tabla reservas
-  #number = '+34601364570'
-
-  #send_to_whatsapp(content,number)
-
-  # If the content contains the detailed explanation, replace it with 'No definido'
-  if "no definido" in content or "no especific" in content or "no se especifi" in content:
-      content = 'No definido'
-      msg = "Pregunta sin contexto recbidia"
-      send_email(msg, recipient="alech.maria@hotmail.com", subject="Resultado de la prueba")
-
-  return content
+    return content
 
 
 
