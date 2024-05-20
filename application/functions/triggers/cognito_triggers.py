@@ -42,11 +42,11 @@ def pre_verification_trigger(event, context):
 
         # TODO: Revision
         if event.get('triggerSource') == 'CustomMessage_AdminCreateUser':
-
+            print('Llega')
             _user_name = event.get('request').get('clientMetadata').get('user_name')
             _admin_name = event.get('request').get('clientMetadata').get('admin_name')
             _message, _subject = get_cognito_invitation_email(username=username_parameter, user_name=_user_name, admin_name=_admin_name, code=code_parameter, language=language)
-
+            print('Peta')
             _context.update({
                 'emailSubject': _subject,
                 'emailMessage': _message
@@ -66,6 +66,7 @@ def pre_verification_trigger(event, context):
         # TODO: Include handler error triggers
         raise Exception(e)
 
+    print('[SIGN UP] EVENT', event)
     return event
 
 

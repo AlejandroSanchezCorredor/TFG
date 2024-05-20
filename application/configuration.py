@@ -26,6 +26,9 @@ class BaseConfiguration(object):
     DATABASE_PORT = os.getenv('RDS_AURORA_PORT', None)
     DATABASE_DB = os.getenv('RDS_AURORA_DB', None)
 
+    # > AWS SERVICE: CLOUDFRONT DOMAIN
+    CLOUDFRONT_DOMAIN = os.getenv('CF_DOMAIN', 'mira')
+
     # BOOKING EXTRANET CONFIGURATION
     BOOKING_EXTRANET_USER = os.getenv('BOOKING_EXTRANER_USER', None)
     BOOKING_EXTRANET_PASSWORD = os.getenv('BOOKING_EXTRANER_PASSWORD', None)

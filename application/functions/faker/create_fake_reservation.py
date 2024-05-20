@@ -14,6 +14,7 @@ MIN_PEOPLE = 1
 MAX_PEOPLE = 10
 MIN_PRICE = 50
 MAX_PRICE = 500
+LANGUAGES = ['en', 'es', 'fr', 'de', 'it']
 
 def create_fake_reservation(fake, user_name, propiedad_id):
     configuration = get_configuration()
@@ -30,7 +31,7 @@ def create_fake_reservation(fake, user_name, propiedad_id):
         bedrooms_n=str(random.randint(MIN_BEDROOMS, MAX_BEDROOMS)),
         people_n=str(random.randint(MIN_PEOPLE, MAX_PEOPLE)),
         price=str(random.randint(MIN_PRICE, MAX_PRICE)),
-        idiom='en',
+        idiom=random.choice(LANGUAGES),
         client_name=client_name
     )
 

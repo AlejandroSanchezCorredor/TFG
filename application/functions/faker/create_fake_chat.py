@@ -1,5 +1,6 @@
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
+import os
 from application.models.chats_model import Chats
 from application.core.aws.ses import send_email
 from application.services.gpt_service import get_gpt_response
@@ -8,30 +9,18 @@ from application.core.configuration_loader import get_configuration
 MIN_N_MESSAGES = 2
 MAX_N_MESSAGES = 4
 
+def load_texts_from_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return [line.strip() for line in file.readlines()]
+
+# Obtenemos la ruta absoluta del directorio actual
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Texto simulado que el propietario podría enviar a su cliente
-partner_text = [
-    "La propiedad está en excelente estado.",
-    "La casa cuenta con una cocina moderna y bien equipada.",
-    "La propiedad incluye una plaza de aparcamiento privado.",
-    "El interior de la casa ha sido recientemente renovado.",
-    "La propiedad está ubicada en un barrio tranquilo.",
-]
+partner_text = load_texts_from_file(os.path.join(current_dir, 'utils', 'partner_text.txt'))
 
-# Lista de preguntas del guest que podría realizar el cliente al propieatario
-guest_questions = [
-    "¿Cuántos baños tiene la propiedad?",
-    "¿La propiedad tiene un jardín?",
-    "¿La cocina está equipada?",
-    "¿La propiedad está cerca de tiendas y restaurantes?",
-    "¿La propiedad tiene plaza de aparcamiento?",
-    "¿Cuantas habitaciones hay?",
-    "¿Que puntuaciones ha tenido la propiedad anteriormente?",
-    "¿Donde está ubicada la propiedad?",
-    "¿Cual es el precio final de la reserva?",
-    "¿Cuantas personas pueden alojarse en la propiedad?",
-    "¿Quien ha hecho la reserva?",
-
-]
+# Lista de preguntas del guest que podría realizar el cliente al propietario
+guest_questions = load_texts_from_file(os.path.join(current_dir, 'utils', 'guest_questions.txt'))
 
 def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva_id, dict_property, dict_reservation, configuration):
     id_conversation = fake.uuid4()
@@ -55,8 +44,6 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
         "property": dict_property,
         "reservation": dict_reservation
     }
-
-    print(messages)
 
     gpt_answer= get_gpt_response(context)
     msg = "Chat GPT ha respondido\n" + gpt_answer + " a la conversación : " + conversation_pk

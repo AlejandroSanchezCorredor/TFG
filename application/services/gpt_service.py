@@ -22,7 +22,7 @@ def get_gpt_response(message):
         Paso 7: Si tienes más de una pregunta sin responder, solo muestra las respuestas separadas por un punto y coma. \
         La respuesta debe ser breve y en lenguaje humano. \
         Tómate tu tiempo para responder como lo haría el propietario de la propiedad. \
-        Responde de manera humanizada. \
+        Responde de manera humanizada y únicamente a las que estén relacionadas con las propiedades y reservas. \
         Aquí está todo el contexto de la situación: \
         {context}"""
             }]

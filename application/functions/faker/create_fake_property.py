@@ -18,5 +18,4 @@ def create_fake_property(fake, state):
     propiedad_dict = propiedad.to_dict()
     propiedad.save()
     
-    print("Propiedad almacenada en la base de datos:", propiedad_dict)
     return propiedad_dict

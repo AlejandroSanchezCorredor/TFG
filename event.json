@@ -1,0 +1,16 @@
+{
+    "version": "1",
+    "region": "us-east-1",
+    "userPoolId": "us-east-1_example",
+    "userName": "example",
+    "triggerSource": "CustomMessage_SignUp",
+    "request": {
+      "userAttributes": {
+        "email": "example@example.com",
+        "custom:language": "EN-en"
+      },
+      "codeParameter": "123456",
+      "usernameParameter": "example"
+    },
+    "response": {}
+  }

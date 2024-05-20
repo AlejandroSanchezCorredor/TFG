@@ -20,17 +20,19 @@ def get_reservations(event, context):
             msg = "No existen propiedades para asignar a la reserva."
             send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Creación de reserva")
             return None
-        
+
         property = random.choice(properties)
+        dict_property = property.to_dict()
         user_name, property_id = property.pk.split("#")
+        print("Propiedad obtenida: " + str(dict_property))
         print("Creando una nueva reserva")
         reservation= create_fake_reservation(fake, user_name, property_id)
         msg = "Se ha creado una nueva reserva: " + str(reservation)
+        print("Reserva creada: " + str(reservation))
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Obtención de reservas")
     else:
         msg = "No existen nuevas reservas"
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Obtención de reservas")
+        print(msg)
 
-
-    
 

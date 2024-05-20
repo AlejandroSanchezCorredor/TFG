@@ -20,8 +20,10 @@ def get_properties(event, context):
     if random.random() < 0.6:
         print("Creando una nueva propiedad...")
         property= create_fake_property(fake, state)
+        print("Propiedad creada: " + str(property))
         msg = "Se ha creado una nueva propiedad: " + str(property)
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Obtención de propiedades")
     else:
         msg = "No se ha obtenido ninguna propiedad nueva"
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Obtención de propiedades")
+        print(msg)
