@@ -1,3 +1,10 @@
+¿Que puntuaciones tiene la propiedad?
+¿Quien ha hecho la reserva?
+¿Cual es el estado de la propiedad?
+¿Donde está ubicada la propiedad?
+¿Como se llama la casa?
+¿Qué día tengo que ir a la casa?
+¿Qué día me tengo que ir a la casa?
 ¿Cuántos baños tiene la propiedad?
 ¿La propiedad tiene un jardín?
 ¿La cocina está equipada?
@@ -5,7 +12,6 @@
 ¿La propiedad tiene plaza de aparcamiento?
 ¿Cuantas habitaciones hay?
 ¿Que puntuaciones ha tenido la propiedad anteriormente?
-¿Donde está ubicada la propiedad?
 ¿Cual es el precio final de la reserva?
 ¿Cuantas personas pueden alojarse en la propiedad?
 ¿Quien ha hecho la reserva?

@@ -12,7 +12,6 @@ from application.functions.web_scraping.get_reservations_scraped import *
 def api(event, context):
     return HTTPRouter.route_request(event, context)
 
-
 @SchedulerHandler()
 def scheduler(event, context):
     return SchedulerTasker.task_request(event, context)

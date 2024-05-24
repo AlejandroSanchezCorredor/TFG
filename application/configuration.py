@@ -1,6 +1,5 @@
 import os
 import re
-import logging
 from application.core.aws.ssm import get_parameter
 
 class BaseConfiguration(object):
@@ -11,32 +10,12 @@ class BaseConfiguration(object):
     AWS_STAGE = os.getenv('AWS_STAGE', None)
     AWS_REGION = os.environ.get('AWS_REGION', None)
 
-    # > AWS SERVICE: COGNITO
-    COGNITO_USER_POOL_ID = os.getenv('COGNITO_USER_POOL_ID', None)
-    COGNITO_USER_POOL_CLIENT_ID = os.getenv('COGNITO_USER_POOL_CLIENT_ID', None)
-
     # > AWS SERVICE: SES
     SES_EMAIL_SENDER = os.getenv('SES_EMAIL_SENDER_ADDRESS', None)
-
-    # DATABASE CONFIGURATION
-    DATABASE_TYPE = 'mysql+pymysql'
-    DATABASE_USER = os.getenv('RDS_MASTER_USER', None)
-    DATABASE_PASSWORD = os.getenv('RDS_MASTER_PASSWORD', None)
-    DATABASE_URI = os.getenv('RDS_AURORA_ENDPOINT', None)
-    DATABASE_PORT = os.getenv('RDS_AURORA_PORT', None)
-    DATABASE_DB = os.getenv('RDS_AURORA_DB', None)
-
-    # > AWS SERVICE: CLOUDFRONT DOMAIN
-    CLOUDFRONT_DOMAIN = os.getenv('CF_DOMAIN', 'mira')
 
     # BOOKING EXTRANET CONFIGURATION
     BOOKING_EXTRANET_USER = os.getenv('BOOKING_EXTRANER_USER', None)
     BOOKING_EXTRANET_PASSWORD = os.getenv('BOOKING_EXTRANER_PASSWORD', None)
-
-
-    # ENVIRONMENT CONFIGURATION
-    DEBUG_SQL = False
-    LOG_LEVEL = logging.WARNING
 
     def __getattribute__(self, name):
         item = object.__getattribute__(self, name)

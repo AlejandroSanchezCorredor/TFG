@@ -34,14 +34,4 @@ def delete_reservations(event, context):
 
     return default_delete(model_class=Reservations, hash_key=id, range_key= sort_key)
 
-'''
-from application.core.scheduler import SchedulerTasker
-import datetime
-
-@SchedulerTasker.task('activa')
-def miprueba(event, context):
-    print("Prueba Scheduler")
-    today = datetime.datetime.now()
-    print("Hora actual:", today.strftime("%H:%M:%S"))
-'''
 

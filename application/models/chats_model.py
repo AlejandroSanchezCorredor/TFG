@@ -17,8 +17,8 @@ class Chats(BaseModel):
         return {
             'pk': self.pk,
             'sk': self.sk,
-            'sender': self.sender,
-            'receiver': self.receiver,
+            'emisor': self.sender,
+            'receptor': self.receiver,
             'response': [message for message in self.response], 
         }
     

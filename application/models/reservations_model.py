@@ -21,13 +21,13 @@ class Reservations(BaseModel):
     def to_dict(self):
             return {
                 'pk': self.pk,
-                'sk': self.sk,
+                'check_in_date': self.sk,
                 'check_out_date': self.check_out_date,
-                'bedrooms_n': self.bedrooms_n,
-                'people_n': self.people_n,
-                'price': self.price,
-                'idiom': self.idiom,
-                'client_name': self.client_name,
+                'num_habitaciones': self.bedrooms_n,
+                'num_personas': self.people_n,
+                'precio': self.price,
+                'idioma_preferencia': self.idiom,
+                'nombre_cliente': self.client_name,
             }
 
 

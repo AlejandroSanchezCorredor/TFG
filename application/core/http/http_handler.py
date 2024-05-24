@@ -3,7 +3,6 @@ import traceback
 from .http_request import current_request
 from .http_functions import error, HTTPError
 from ..log.log_types import RequestType
-from ..log.log_webhook import webhook_send
 from ..configuration_loader import get_configuration
 
 
@@ -70,13 +69,12 @@ class HTTPHandler(object):
     def __call__(self, orig_func):
         def wrapper(*args, **kwargs):
             try:
-                HTTPHandler._init_log_level()
+                HTTPHandler._init_log_level() # Inicializamos el logging
                 current_request.event = args[0]
                 current_request.context = args[1]
-                current_request.type = HTTPHandler._get_request_type(args[0])
-                return orig_func(*args, **kwargs)
+                current_request.type = HTTPHandler._get_request_type(args[0]) # Identificamos el tipo de request
+                return orig_func(*args, **kwargs) # Ejecutamos la función original
             except Exception as e:
-                webhook_send(current_request, e)
                 return HTTPHandler._handle_exception(e)
             finally:
                 current_request.clear()

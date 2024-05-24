@@ -1,6 +1,5 @@
 import logging
 from .log_types import RequestType
-from .log_webhook import webhook_send
 from ..configuration_loader import get_configuration
 
 LOGGING_NUM = 25    # In between INFO(20) and WARNING(30)
@@ -67,6 +66,5 @@ class LogHandler(object):
                 request.type = LogHandler._get_request_type(args[0])
                 return orig_func(*args, **kwargs)
             except Exception as e:
-                webhook_send(request, e)
                 raise e
         return wrapper

@@ -5,8 +5,6 @@ import re
 import json
 
 
-
-# from application.core.aws.s3 import s3_get_signed_url
 from application.core.configuration_loader import get_configuration
 from pynamodb.attributes import *
 from pynamodb.attributes import MapAttribute, DynamicMapAttribute, UnicodeSetAttribute, UnicodeAttribute, UTCDateTimeAttribute
@@ -56,8 +54,6 @@ class BaseModel(Model):
         def get_value(column):
             value = getattr(self, column)
             attr_instance = self.get_attributes()[column]
-            # if isinstance(attr_instance, S3ObjectURL):
-            #     return s3_get_signed_url(value, attr_instance.bucketname, attr_instance.expiration)
             return self._attr2obj(value)
 
         include = schema['include'] \
@@ -74,11 +70,6 @@ class BaseModel(Model):
         ret_dict = {}
 
         for name, attr_value in self.attribute_values.items():
-            # attr_instance = self.get_attributes()[name]
-            # if isinstance(attr_instance, S3ObjectURL):
-            #     ret_dict[name] = s3_get_signed_url(attr_value, attr_instance.bucketname, attr_instance.expiration)
-            # else:
-            #     ret_dict[name] = self._attr2obj(attr_value)
             ret_dict[name] = self._attr2obj(attr_value)
 
         return ret_dict
@@ -120,17 +111,3 @@ class BaseModel(Model):
                 yield name, attr.serialize(getattr(self, name))
 
 
-class S3ObjectURL(UnicodeAttribute):
-    """
-    This class will be used as a wrapper for string attributes that represent
-    an S3 key/path, allowing us to return a presigned url instead with the
-    expiration time that we specify at instantiation time. We can also specify
-    the bucket name in the constructor (it is not included in the attribute
-    value, i.e., the S3 object key).
-    """
-
-    def __init__(self, bucketname: str = None, expiration: int = None,
-                 *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.bucketname = bucketname
-        self.expiration = expiration

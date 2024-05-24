@@ -56,14 +56,14 @@ def extranet_booking_login(driver):
     except ElementNotInteractableException:
         print("Ha saltado el MFA")
         
-        '''
+        
         screenshot_path = '/tmp/screenshot.png'
 
         driver.save_screenshot(screenshot_path)
         s3 = boto3.client('s3')
         with open(screenshot_path, 'rb') as data:
             s3.upload_fileobj(data, 'prueba-capturas', 'screenshot.png')
-        '''
+        
 
         time.sleep(35)
         cookies = driver.find_element(by=By.ID, value='onetrust-accept-btn-handler') 

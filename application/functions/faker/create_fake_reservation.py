@@ -42,5 +42,6 @@ def create_fake_reservation(fake, user_name, propiedad_id):
     except Exception as e:
         msg = "Error al guardar la reserva en la base de datos."
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando reserva")
+        print(msg + "\n")
     
     return reservation_dict

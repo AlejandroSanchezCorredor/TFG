@@ -111,6 +111,14 @@ def get_properties_scraped(event, context):
         property_id = driver.find_element(By.CLASS_NAME, "property-selector-dropdown__property-id").text.strip()
         property_id = user + "#" + property_id
 
+        # Verificamos si la propiedad ya existe en la base de datos
+        try:
+            existing_property = Properties.get(property_id)
+            print("La propiedad con ID {} ya está almacenada en la base de datos.".format(property_id))
+            continue
+        except Properties.DoesNotExist:
+            pass
+
         property_name, property_state = get_name_state(driver)
         scores = get_all_scores(driver)
         scores_str = json.dumps(scores)

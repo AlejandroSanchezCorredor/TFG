@@ -2,8 +2,6 @@ import logging
 import traceback
 # from .scheduler_error import error
 from .scheduler_task import current_task
-from ..log.log_types import RequestType
-from ..log.log_webhook import webhook_send
 from ..configuration_loader import get_configuration
 
 
@@ -49,7 +47,6 @@ class SchedulerHandler(object):
                 current_task.type = 'SCHEDULER'
                 return orig_func(*args, **kwargs)
             except Exception as e:
-                webhook_send(current_task, e)
                 return SchedulerHandler._handle_exception(e)
             finally:
                 current_task.clear()

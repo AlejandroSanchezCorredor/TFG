@@ -17,9 +17,11 @@ class SchedulerTasker:
         def inner(funct):
             @wraps(funct)
             def wrapper(*args, **kwargs):
-                return funct(*args, **kwargs)
+                result = funct(*args, **kwargs)
+                return result
             SchedulerTasker.handlers[resource] = funct
             return wrapper
 
         return inner
+
     

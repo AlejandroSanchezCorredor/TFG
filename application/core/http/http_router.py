@@ -13,9 +13,9 @@ class HTTPRouter:
         resource = re.sub(r'^/?(.*?)/?$', r'\1', event['resource'])
         if resource in HTTPRouter.handlers:
             http_method = event['httpMethod'].lower()
-            if http_method in HTTPRouter.handlers[resource]:
+            if http_method in HTTPRouter.handlers[resource]: # Comprobamos si existe un controlador para el método HTTP específico
                 return HTTPRouter.handlers[resource][http_method](event, context)
-            elif HTTPRouter.ALL_WILDCARD in HTTPRouter.handlers[resource]:
+            elif HTTPRouter.ALL_WILDCARD in HTTPRouter.handlers[resource]: # Comprobamos si existe un controlador para cualquier método HTTP
                 return HTTPRouter.handlers[resource][HTTPRouter.ALL_WILDCARD](event, context)
             raise HTTPError(405)
         raise HTTPError(404)

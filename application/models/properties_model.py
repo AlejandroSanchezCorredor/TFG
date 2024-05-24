@@ -16,8 +16,8 @@ class Properties(BaseModel):
     def to_dict(self):
             return {
                 'pk': self.pk,
-                'property_name': self.property_name,
-                'description': self.description,
-                'scores': self.scores,
-                'location': self.location,
+                'nombre_propiedad': self.property_name,
+                'estado': self.description,
+                'puntuaciones': self.scores,
+                'ubicacion': self.location,
             }

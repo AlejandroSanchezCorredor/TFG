@@ -65,5 +65,6 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
     except Exception as e:
         msg = "Error al guardar la conversación en la base de datos."
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando conversación")
+        print(msg + "\n")
     
     return conversacion_dict

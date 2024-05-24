@@ -1,5 +1,4 @@
 service: TFG-Booking-application
-# tfg-booking-application
 
 plugins:
   - serverless-offline
@@ -26,9 +25,9 @@ provider:
       apicontainer:
         path: .
         file: Dockerfile.api
-      #testcontainer:
-        #path: .
-        #file: Dockerfile.test
+      testcontainer:
+        path: .
+        file: Dockerfile.test
       
 
   apiGateway:
@@ -39,8 +38,6 @@ provider:
     AWS_STAGE: ${self:provider.stage}
     AWS_SERVICE: ${self:service}
     CHATGPT_API_KEY: ${ssm:/chatgptKey}
-    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
-    COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
     SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
     BOOKING_EXTRANER_USER: ${self:custom.booking_extranet_user}
     BOOKING_EXTRANER_PASSWORD: ${ssm:/booking_extranet_password}
@@ -48,24 +45,6 @@ provider:
   iam:
     role:
       statements:
-        # COGNITO Permissions
-
-        - Effect: Allow
-          Action:
-            - cognito-idp:AdminGetUser
-            - cognito-idp:AdminCreateUser
-            - cognito-idp:AdminUpdateUserAttributes
-            - cognito-idp:AdminDisableUser
-            - cognito-idp:AdminEnableUser
-            - cognito-idp:AdminDeleteUser
-            - cognito-idp:AdminDeleteUserAttributes
-            - cognito-idp:AdminLinkProviderForUser
-            - cognito-idp:AdminUserGlobalSignOut
-            - cognito-idp:AdminListGroupsForUser
-            - cognito-idp:AdminRemoveUserFromGroup
-            - cognito-idp:AdminAddUserToGroup
-            - cognito-idp:ListGroups
-          Resource: !GetAtt CognitoUserPool.Arn
         # SES Permissions
         - Effect: Allow
           Action:
@@ -103,11 +82,6 @@ custom:
   # APP SECURITY
   appSecurity: ${self:custom.appEnvironment.appSecurity}
 
-  # COGNITO POOLS
-  cognitoUserPoolName: ${self:service}-user-pool
-  cognitoIdentityPoolName: ${self:service}_indentity_pool
-  cognitoUserPoolClientName: ${self:custom.cognitoUserPoolName}-client
-
   # SES
   sesEmailSenderAddress: alech.maria@hotmail.com
   sesEmailSenderArn: arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/${self:custom.sesEmailSenderAddress}
@@ -123,12 +97,12 @@ package:
     - 'application/**'
 
 functions:
-  #pruebacontainer:
-    #image:
-      #name: testcontainer
-    #name: pruebaContainer
-    #timeout: 180 
-    #memorySize: 1024 
+  pruebacontainer:
+    image:
+      name: testcontainer
+    name: pruebaContainer
+    timeout: 180 
+    memorySize: 1024 
 
   scheduler:
     image:
@@ -172,7 +146,6 @@ functions:
           #rate: rate(2 minutes)
           #input:
             #task: get_properties
-  
 
   api:
     image:
@@ -240,75 +213,8 @@ functions:
           method: delete
           cors: true
           private: true
-   
-  # TRIGGERS ===========================================================================================================
-
-  CognitoPreVerificationTrigger:
-    handler: application/functions/triggers/cognito_triggers.pre_verification_trigger
-    name: ${self:service}-cognito-pre-verification-trigger
-    maximumRetryAttempts: 1
-    dependsOn:
-      - CognitoUserPool
-    events:
-      - cognitoUserPool:
-          pool: ${self:custom.cognitoUserPoolName}
-          trigger: CustomMessage
-          existing: true
-          forceDeploy: true
-    package:
-      individually: true
-      patterns:
-        - '!application/**'
-        - 'application/configuration.py'
-        - 'application/core/configuration_loader.py'
-        - 'application/core/aws/ssm.py'
-        - 'application/core/mail/mail_handler.py'
-        - 'application/core/mail/templates/snipets/*.*'
-        - 'application/core/mail/templates/cognito_*.*'
-        - 'application/functions/triggers/cognito_triggers.py'
-
-  #CognitoPreSignUpTrigger:
-    #handler: application/functions/triggers/cognito_triggers.pre_sign_up_trigger
-    #name: ${self:service}-cognito-pre-sign-up-trigger
-    #maximumRetryAttempts: 1
-    #dependsOn:
-      #- CognitoUserPool
-    #events:
-      #- cognitoUserPool:
-          #pool: ${self:custom.cognitoUserPoolName}
-          #trigger: PreSignUp
-          #existing: true
-          #forceDeploy: true
-    #package:
-      #individually: true
-      #patterns:
-        #- '!application/**'
-        #- 'application/configuration.py'
-        #- 'application/core/configuration_loader.py'
-        #- 'application/core/aws/ssm.py'
-        #- 'application/core/aws/cognito.py'
-        #- 'application/functions/triggers/cognito_triggers.py'
-
-  #CognitoPreTokenGenerationTrigger:
-    #handler: application/functions/triggers/cognito_triggers.pre_token_generation_trigger
-    #name: ${self:service}-cognito-pre-token-generation-trigger
-    #layers:
-      #- ${cf:${self:service}-requirements-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
-    #maximumRetryAttempts: 1
-    #dependsOn:
-      #- CognitoUserPool
-   # events:
-      #- cognitoUserPool:
-        #  pool: ${self:custom.cognitoUserPoolName}
-        # trigger: PreTokenGeneration
-        #  existing: true
-         # forceDeploy: true
 
 resources:
   # Dynamodb
   - ${file(serverless_resources/dynamodb.yml)}
-  # API Gateway
-  #- ${file(serverless_resources/aws_api_gateway.yml)}
-  # Cognito Authentication
-  - ${file(serverless_resources/aws_cognito.yml)}
 

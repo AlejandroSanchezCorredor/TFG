@@ -13,7 +13,7 @@ fake = Faker('es_ES')
 def get_chats(event, context):
     configuration = get_configuration()
     
-    print("Revisando si hay nuevos mensajes de clientes")
+    print("Revisando si hay nuevos mensajes de clientes...\n")
 
     if random.random() < 0.6:
         try:
@@ -21,6 +21,7 @@ def get_chats(event, context):
         except Exception as e:
             msg = "No existen propiedades para asignar a la conversacion."
             send_email(msg, recipient="alech.maria@hotmail.com", subject="Obtención de mensajes sin responder")
+            print(msg)
             return None
         
         property = random.choice(properties) # Obtengo la propiedad a la que va a estar relacionada la conversación
@@ -53,7 +54,6 @@ def get_chats(event, context):
 
         print("Creando una nueva conversación")
         conversation= create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva_id, dict_property, dict_reservation, configuration)
-        print("Conversación creada: " + str(conversation))
         msg = "Se ha creado una nueva conversación : " + str(conversation)
         print(msg)
         send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Obtención de conversaciones/mensajes sin responder")
