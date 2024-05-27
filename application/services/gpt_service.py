@@ -9,6 +9,7 @@ def get_gpt_response(message):
     context = json.dumps(message)
     key = os.getenv('CHATGPT_API_KEY', None)
     # Con los datos simulados detecta que las preguntas del cliente no tienen respuesta y responde a todas
+    # ya que la conversación carece de sentido real
     prompt = [{
         'role': 'system',
         'content': f"""Eres un asistente cuyo deber es responder preguntas automáticamente de manera breve y precisa que tengan que ver un propiedades y reservas. \
