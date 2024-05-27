@@ -48,7 +48,7 @@ def get_gpt_response(message):
         # Encuentra el segundo ":" después de "sin responder"
         second_colon = content.find(":", index + len("sin responder"))
 
-        # Si se encontró un segundo ":", toma todo después de eso
+        # Si se encontró un segundo ":", coge todo después de eso
         if second_colon != -1:
             content = content[second_colon+1:].strip()
         else:
