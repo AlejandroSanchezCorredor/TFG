@@ -5,6 +5,7 @@ plugins:
   - serverless-offline-scheduler
   - serverless-export-env
   - serverless-python-requirements
+  - serverless-s3-deploy
 
 provider:
   name: aws
@@ -41,6 +42,8 @@ provider:
     SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
     BOOKING_EXTRANER_USER: ${self:custom.booking_extranet_user}
     BOOKING_EXTRANER_PASSWORD: ${ssm:/booking_extranet_password}
+    S3_BUCKET_STORAGE: ${self:custom.s3BucketStorageName}
+    CF_DOMAIN: ${self:custom.cloudFrontDomainName}
 
   iam:
     role:
@@ -72,9 +75,13 @@ provider:
         # S3 Permissions
         - Effect: Allow
           Action:
-            - s3:*
-          Resource:
-            - '*'
+            - s3:ListBucket
+            - s3:GetObject
+            - s3:PutObject
+            - s3:GetObjectTagging
+            - s3:PutObjectTagging
+            - s3:DeleteObject
+          Resource: "*"
 
 
 custom:
@@ -88,6 +95,30 @@ custom:
 
   # BOOKING EXTRANET
   booking_extranet_user: Alejandro_Sanchez
+
+  # S3 BUCKETS
+  s3BucketAppName: tfg-booking-application.webapp.${self:provider.stage}
+  s3BucketStorageName: tfg-booking-application.storage.${self:provider.stage}
+
+  # ROUTE53
+  route53DomainName: ${self:custom.appEnvironment.route53DomainName}
+
+  # CLOUDFRONT
+  cloudFrontDomainName: app.${self:custom.route53DomainName}
+  cloudFrontHostedZoneId: ${self:custom.appEnvironment.cloudFrontHostedZoneId}
+
+  # [GENERATOR] CERTIFICATE + DOMAIN
+  customDomain: ${file(serverless_resources/aws_route53.yml)}
+
+  # UPLOADING FRONTEND TO S3
+  assets:
+    auto: true
+    targets:
+      - bucket: 
+          Ref: S3BucketApp
+        files:
+          - source: ./frontend2/dist/frontend2/browser/
+            globs: '**/*'
 
 package:
   individually: true
@@ -194,6 +225,16 @@ functions:
           cors: true
           private: true
       - http:
+          path: api/chat
+          method: GET
+          cors: true
+          private: true
+      - http:
+          path: api/chat
+          method: POST
+          cors: true
+          private: true
+      - http:
           path: api/properties
           method: get
           cors: true
@@ -217,4 +258,8 @@ functions:
 resources:
   # Dynamodb
   - ${file(serverless_resources/dynamodb.yml)}
+  # S3 Buckets
+  - ${file(serverless_resources/aws_s3.yml)}
+  # Cloudfront
+  - ${file(serverless_resources/aws_cloudfront.yml)}
 

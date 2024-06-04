@@ -32,12 +32,14 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
     unique_guest_questions = random.sample(guest_questions, n_messages)
 
     for i in range(n_messages):
-        messages.append({"author": "partner", "content": unique_partner_text[i]})
-        messages.append({"author": "guest", "content": unique_guest_questions[i]})
+        if unique_partner_text[i].strip():  # Nos aseguramos de que el mensaje no esté vacío
+            messages.append({"author": "emisor", "content": unique_partner_text[i]})
+        if unique_guest_questions[i].strip():  # Nos aseguramos de que el mensaje no esté vacío
+            messages.append({"author": "receptor", "content": unique_guest_questions[i]})
 
     # El último mensaje es una pregunta que hace el cliente (guest)
     remaining_questions = [q for q in guest_questions if q not in unique_guest_questions] # Selecciona las preguntas restantes que el "guest" no ha hecho aún
-    messages.append({"author": "guest", "content": random.choice(remaining_questions)})
+    messages.append({"author": "receptor", "content": random.choice(remaining_questions)})
 
     context = {
         "mensajes": messages,
@@ -49,7 +51,7 @@ def create_fake_conversation(fake, client_name, user_name, propiedad_id, reserva
     msg = "Chat GPT ha respondido\n" + gpt_answer + " a la conversación : " + conversation_pk
     send_email(msg, recipient=configuration.SES_EMAIL_SENDER, subject="Guardando conversación")
 
-    messages.append({"author": "partner", "content": gpt_answer})
+    messages.append({"author": "emisor", "content": gpt_answer})
 
     conversacion = Chats(
         pk=conversation_pk,

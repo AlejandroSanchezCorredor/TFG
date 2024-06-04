@@ -1,0 +1,11 @@
+# ======================================================================================================================
+# [DEFINITION] ACM Certificate > Certificate for domain Route53
+# ======================================================================================================================
+certificateName: '*.${self:custom.route53DomainName}'
+#idempotencyToken: ''
+hostedZoneNames: '${self:custom.route53DomainName}.'
+region: 'us-east-1'
+tags:
+  Name: '${self:custom.route53DomainName}'
+  Environment: ${self:provider.stage}
+rewriteRecords: false

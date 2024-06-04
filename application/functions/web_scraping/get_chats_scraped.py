@@ -66,9 +66,9 @@ def get_messages(driver):
     for message in messages_element: # Recorremos los mensajes de cada conversación
         # Compramos si el mensaje lo envía el propietario (partner) o el cliente (guest)
         if "conversation-message--from-guest" in message.get_attribute("class"):
-            author = "guest"
+            author = "receptor"
         elif "conversation-message--from-partner" in message.get_attribute("class"):
-            author = "partner"
+            author = "emisor"
         else:
             # Si el mensaje no es ni del propieatario ni del cliente, lo ignoramos
             continue

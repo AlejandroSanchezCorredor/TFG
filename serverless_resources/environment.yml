@@ -6,17 +6,31 @@ environment:
   production:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
+    # ROUTE53
+    route53DomainName: tfg.booking.link
+
+    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
     # ENABLE SCHEDULE
     enableSchedule: true
 
   preproduction:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
+    # ROUTE53
+    route53DomainName: preproduction.tfg.booking.link
+
+    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
     # ENABLE SCHEDULE
     enableSchedule: true
 
   develop:
     # APP SECURITY
     appSecurity: ${file(serverless_resources/app_security.yml):${self:provider.stage}_security}
+    # ROUTE53
+    route53DomainName: develop.tfg.booking.link
+    
+    cloudFrontHostedZoneId: Z2FDTNDATAQYW2
     # ENABLE SCHEDULE
     enableSchedule: false
+
+

@@ -1,0 +1,21 @@
+<div class="chat-container">
+  <div class="title-container">
+    <h1>Bienvenido a TFG Booking App</h1>
+  </div>
+  <h2>Conversaciones</h2>
+  <div class="conversation" *ngIf="conversation && conversation.length">
+    <div *ngFor="let message of conversation" class="message" [ngClass]="{'author-sender': message.author === 'emisor', 'author-receiver': message.author === 'receptor'}">
+      <div class="content">
+        <p class="author-name">{{ message.author === 'emisor' ? sender : receiver }}</p>
+        <p>{{ message.content }}</p>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!conversation.length" class="loading">
+    <p>Loading conversation...</p>
+  </div>
+  <div class="message-input">
+    <input [(ngModel)]="newMessage" type="text" placeholder="Type a message..." />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>

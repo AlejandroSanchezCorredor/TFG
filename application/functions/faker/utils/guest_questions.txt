@@ -1,53 +1,13 @@
-¿Que puntuaciones tiene la propiedad?
+¿Cómo está el estado de la propiedad?
 ¿Quien ha hecho la reserva?
-¿Cual es el estado de la propiedad?
-¿Donde está ubicada la propiedad?
-¿Como se llama la casa?
-¿Qué día tengo que ir a la casa?
-¿Qué día me tengo que ir a la casa?
-¿Cuántos baños tiene la propiedad?
-¿La propiedad tiene un jardín?
-¿La cocina está equipada?
-¿La propiedad está cerca de tiendas y restaurantes?
-¿La propiedad tiene plaza de aparcamiento?
-¿Cuantas habitaciones hay?
-¿Que puntuaciones ha tenido la propiedad anteriormente?
-¿Cual es el precio final de la reserva?
 ¿Cuantas personas pueden alojarse en la propiedad?
-¿Quien ha hecho la reserva?
-¿La propiedad admite mascotas?
-¿Hay algún costo adicional por el uso de la piscina?
-¿Cuál es la política de cancelación?
-¿Se ofrece servicio de limpieza durante la estancia?
-¿Hay servicio de transporte desde el aeropuerto?
-¿La propiedad tiene acceso para personas con movilidad reducida?
-¿El vecindario es seguro?
-¿Hay algún supermercado cerca de la propiedad?
-¿La propiedad tiene aire acondicionado?
-¿El WiFi está incluido en el precio de la reserva?
-¿Se permite fumar dentro de la propiedad?
-¿La propiedad tiene lavadora y secadora?
-¿Hay bares o restaurantes recomendados en la zona?
-¿La casa dispone de calefacción central?
-¿La propiedad cuenta con ropa de cama y toallas?
-¿Hay servicio de recepción disponible las 24 horas?
-¿Cuánto cuesta el servicio de limpieza?
-¿Se puede hacer el check-in antes de la hora establecida?
-¿Hay algún lugar para guardar bicicletas?
-¿Cuál es la distancia a la playa más cercana?
-¿Hay áreas recreativas para niños cerca de la propiedad?
-¿La casa tiene una parrilla para asados?
-¿La propiedad cuenta con alguna zona de trabajo o escritorio?
-¿Hay estacionamiento para visitantes?
-¿La propiedad está cerca de algún parque o área verde?
-¿Se pueden organizar eventos o fiestas en la propiedad?
-¿La propiedad tiene vista al mar o a la montaña?
-¿Hay alguna tarifa adicional por el uso de electricidad o agua?
-¿Cuál es la velocidad de internet en la propiedad?
-¿Se pueden recibir visitas durante la estancia?
-¿Hay alguna estación de metro o tren cercana?
-¿La propiedad tiene algún seguro en caso de daños?
-¿El propietario vive cerca de la propiedad?
-¿La propiedad está en una zona de construcción o ruidosa?
-¿Se puede alquilar equipo deportivo o de recreo cerca de la propiedad?
-¿La propiedad dispone de alguna guía turística o recomendaciones de la zona?
+¿Donde está la casa?
+¿Cual es la fecha de salida?
+¿Cual es la fecha de entrada?
+¿Cuantas habitaciones tiene la propiedad?
+¿Cual es el precio de la reserva?
+¿Cuales son las puntuaciones de la propiedad?
+¿Tiene aire acondicionado la propiedad?
+¿Dispone de sistema de seguridad?
+¿Se permiten mascotas?
+¿Tiene luz natural en abundancia la propiedad?

@@ -7,7 +7,10 @@
     "serverless": "serverless"
   },
   "dependencies": {
-    "serverless": "^3.27.0"
+    "serverless": "^3.27.0",
+    "serverless-cloudfront-invalidate": "^1.12.2",
+    "serverless-finch": "^4.0.4",
+    "serverless-s3-sync": "^3.3.0"
   },
   "devDependencies": {
     "serverless-certificate-creator": "^1.6.0",
@@ -16,6 +19,7 @@
     "serverless-offline": "^12.0.4",
     "serverless-offline-scheduler": "^0.5.0",
     "serverless-python-requirements": "^6.1.0",
+    "serverless-s3-deploy": "^0.10.1",
     "webpack-cli": "^5.1.4"
   }
 }

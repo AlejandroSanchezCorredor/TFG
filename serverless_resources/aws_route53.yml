@@ -1,0 +1,9 @@
+# ======================================================================================================================
+# [DEFINITION] Domain > Custom domain to API Gateway endpoints
+# ======================================================================================================================
+domainName: api.${self:custom.route53DomainName}
+basePath: ''
+stage: ${self:provider.stage}
+createRoute53Record: true
+endpointType: 'edge'
+region: 'eu-west-3'
