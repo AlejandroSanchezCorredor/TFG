@@ -58,7 +58,7 @@ def post_chat(event, context):
         reservation_pk = "#".join(pk_components[:3])
 
         property_item = default_get(model_class=Properties, hash_key=property_pk)
-        reservation_item = default_get(model_class=Reservations, hash_key=reservation_pk, range_key='2024-06-07T16:54:01.582239')
+        reservation_item = default_get(model_class=Reservations, hash_key=reservation_pk, range_key='2024-06-07T16:54:05.315291')
 
         property_data = property_item.get('body', {})
         reservation_data = reservation_item.get('body', {})

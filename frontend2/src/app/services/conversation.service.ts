@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ConversationService {
-  private apiUrl = 'https://4xoz4a1nv7.execute-api.eu-west-3.amazonaws.com/develop/api';  // Reemplaza con tu URL de API
-  private apiKey = '3nGg4RM6Hd6tETeoqgae06nFQbPEhDr45N98JE2G';
+
+  private apiUrl = 'https://4xoz4a1nv7.execute-api.eu-west-3.amazonaws.com/develop/api'; 
+  private apiKey = '3nGg4RM6Hd6tETeoqgae06nFQbPEhDr45N98JE2G'; 
 
   constructor(private http: HttpClient) {}
 

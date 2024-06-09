@@ -23,10 +23,11 @@ def get_gpt_response(message):
         Paso 5: Responde únicamente a las preguntas que no tengan respuesta. 
         Paso 6: Comprueba si la pregunta está relacionada con la propiedad o las reservas. 
         Paso 7: Comprueba si tienes la respuesta a dicha pregunta dentro del contexto. 
-        Paso 8: Si los pasos 5 y 6 se cumplen, responde a la pregunta. En caso contrario, responde "No definido". 
-        Paso 9: Si tienes más de una pregunta sin responder, solo muestra las respuestas separadas por un punto y coma y repite los pasos anteriores. 
-        Paso 10: No vuelvas a incluir la pregunta en la respuesta. 
-        Fundamental, responde de manera directa a las preguntas, sin introducciones ni frases adicionales: Solo la respuesta, si los pasos 5 y 6 se cumplen, o si no, responde "No definido". 
+        Paso 8: Si los pasos 5 y 6 se cumplen, responde a la pregunta. En caso contrario, distingue entre dos casos que te explico en el siguiente paso. 
+        Paso 9: Si la pregunta no está relacionada con la propiedad o las reservas, responde "No definido" o si la pregunta está relacionada con la propiedad o las reservas pero no tienes la respuesta, responde "Voy a consultarlo ahora mismo".
+        Paso 10: Si tienes más de una pregunta sin responder, solo muestra las respuestas separadas por un punto y coma y repite los pasos anteriores. 
+        Paso 11: No vuelvas a incluir la pregunta en la respuesta. 
+        Fundamental, responde de manera directa a las preguntas, sin introducciones ni frases adicionales: Solo la respuesta.
         El formato de la respuesta tiene que ser: respuesta1;respuesta2;respuesta3, etc. 
         La respuesta debe ser breve y en lenguaje humano. 
         Tómate tu tiempo para responder como lo haría el propietario de la propiedad. 

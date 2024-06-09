@@ -1,1 +1,15 @@
-<app-conversation></app-conversation>
+<amplify-authenticator *ngIf="!isAuthenticated" [loginMechanisms]="['email']" [formFields]="formFields" [signUpAttributes]="['name']">
+  <ng-template
+    amplifySlot="authenticated"
+    let-user="user"
+    let-signOut="signOut"
+  >
+    <div style="text-align: center;">
+      <h1>Ha iniciado sesión correctamente. ¿Quiere acceder a una conversación?</h1>
+      <button style="margin: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;" (click)="signOut()">Cerrar sesión</button>
+      <button style="margin: 10px; padding: 10px; background-color: #008CBA; color: white; border: none; cursor: pointer;" (click)="handleSignIn($event)">Ir a la conversación</button>
+    </div>
+  </ng-template>
+</amplify-authenticator>
+
+<router-outlet *ngIf="isAuthenticated"></router-outlet>

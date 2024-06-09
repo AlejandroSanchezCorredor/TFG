@@ -7,6 +7,7 @@
     "serverless": "serverless"
   },
   "dependencies": {
+    "@aws-amplify/ui-angular": "^5.0.16",
     "serverless": "^3.27.0",
     "serverless-cloudfront-invalidate": "^1.12.2",
     "serverless-finch": "^4.0.4",

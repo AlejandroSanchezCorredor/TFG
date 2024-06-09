@@ -15,8 +15,8 @@ export class ConversationComponent implements OnInit {
   sender: string = 'Emisor';
   receiver: string = 'Receptor';
   newMessage: string = '';
-  pk: string = 'Rafa del Bello#b43c7336-5a16-4571-b02e-782c8dfff4f9#48c4fa75-f495-4e3b-883a-75ea3b1920bd#e7a4d3e4-6d2a-4435-a0d1-6e496985b77c';
-  sk: string = '2024-06-03T16:55:20.451676';
+  pk: string = 'Jose Ramón Cases Alberola#5455b9de-f10d-4db3-89ee-c5968e403ef8#aeb27cbf-70b1-4ee1-aa49-5806d03ff4c7#73badab0-3de0-414f-af35-571ad72c40ea';
+  sk: string = '2024-06-03T16:54:20.242243';
 
   constructor(private conversationService: ConversationService) { }
 

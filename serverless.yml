@@ -39,11 +39,14 @@ provider:
     AWS_STAGE: ${self:provider.stage}
     AWS_SERVICE: ${self:service}
     CHATGPT_API_KEY: ${ssm:/chatgptKey}
+    #API_KEY: ${ssm:/apiKey}
     SES_EMAIL_SENDER_ADDRESS: ${self:custom.sesEmailSenderAddress}
     BOOKING_EXTRANER_USER: ${self:custom.booking_extranet_user}
     BOOKING_EXTRANER_PASSWORD: ${ssm:/booking_extranet_password}
     S3_BUCKET_STORAGE: ${self:custom.s3BucketStorageName}
     CF_DOMAIN: ${self:custom.cloudFrontDomainName}
+    COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+    COGNITO_USER_POOL_CLIENT_ID: !Ref CognitoUserPoolClient
 
   iam:
     role:
@@ -119,6 +122,11 @@ custom:
         files:
           - source: ./frontend2/dist/frontend2/browser/
             globs: '**/*'
+
+  # COGNITO POOLS
+  cognitoUserPoolName: tfg-booking-application-user-pool
+  cognitoIdentityPoolName: tfg-booking-application_indentity_pool
+  cognitoUserPoolClientName: tfg-booking-application-client
 
 package:
   individually: true
@@ -262,4 +270,6 @@ resources:
   - ${file(serverless_resources/aws_s3.yml)}
   # Cloudfront
   - ${file(serverless_resources/aws_cloudfront.yml)}
+  # Cognito Authentication
+  - ${file(serverless_resources/aws_cognito.yml)}
 
